@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1E6B4F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="واش نطيبو اليوم؟ — اقتراح الغدا، قهوة العصر والعشا حسب واش كاين في الكوزينة. مطبخ جزائري 🇩🇿">
+<meta property="og:title" content="واش نطيبو اليوم؟ 🍲">
+<meta property="og:description" content="برنامج الماكلة تاع اليوم: الغدا، قهوة العصر والعشا — أطباق وحلويات جزائرية">
+<meta property="og:image" content="icons/og.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>واش نطيبو اليوم؟</title>
+<script>
+(function(){var t=null;try{t=JSON.parse(localStorage.getItem('wn_theme'))}catch(e){}
+if(!t){try{t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){t='light'}}
+document.documentElement.dataset.theme=t;})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF5EA; --card:#FFFFFF; --ink:#2B2118; --muted:#7A6A58; --line:#EADFCC; --surface:#F4EEE3; --track:#F1E9DC;
+  --green:#1E6B4F; --green-2:#2E8A66; --green-soft:#E3F0E8; --green-ink:#1E6B4F;
+  --terra:#C4552D; --terra-soft:#FBE6DB; --terra-ink:#8E3A1C;
+  --gold-soft:#FBF0D6; --gold-ink:#8A6212; --gold-line:#F0DDAE;
+  --header:#1E6B4F; --nav:rgba(255,255,255,.96); --overlay:rgba(43,33,24,.45);
+  --radius:20px; --shadow:0 6px 24px rgba(74,48,20,.08);
+  color-scheme:light;
+}
+html[data-theme="dark"]{
+  --bg:#15120F; --card:#221D18; --ink:#F2E9DB; --muted:#B3A38E; --line:#3A3129; --surface:#2E2721; --track:#3A3129;
+  --green:#2C8A64; --green-2:#36A076; --green-soft:#1B3A2E; --green-ink:#86D9B3;
+  --terra:#D5653C; --terra-soft:#3E241A; --terra-ink:#F3A887;
+  --gold-soft:#3A2F17; --gold-ink:#F0C66B; --gold-line:#5A4720;
+  --header:#123628; --nav:rgba(27,23,19,.96); --overlay:rgba(0,0,0,.62);
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);transition:background .25s}
+body{font-family:'Cairo',system-ui,sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:96px}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+
+/* Header with zellige pattern */
+header{
+  background:var(--header);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.13' stroke-width='1.2'%3E%3Crect x='14' y='14' width='20' height='20'/%3E%3Crect x='14' y='14' width='20' height='20' transform='rotate(45 24 24)'/%3E%3Ccircle cx='24' cy='24' r='4'/%3E%3Cpath d='M0 0l8 8M48 0l-8 8M0 48l8-8M48 48l-8-8'/%3E%3C/g%3E%3C/svg%3E");
+  color:#fff;padding:22px 0 54px;border-radius:0 0 32px 32px;position:relative;transition:background-color .25s
+}
+header .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.greet{font-size:15px;opacity:.9}
+h1{font-family:'Reem Kufi',serif;font-size:30px;line-height:1.3;margin-top:2px}
+.date{font-size:13px;opacity:.85;margin-top:4px}
+.hdr-side{display:flex;flex-direction:column;align-items:center;gap:8px}
+.flag{font-size:30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}
+.theme-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);font-size:20px;display:grid;place-items:center}
+.banner{margin-top:12px;display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600}
+
+main{margin-top:-38px;position:relative}
+.view{display:none;animation:fade .25s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:14px}
+.sec-title{font-weight:800;font-size:18px;margin:22px 4px 10px;display:flex;align-items:center;gap:8px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.title-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+.title-row .t{font-weight:800;font-size:18px}
+
+/* Style picker */
+.styles{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--card);padding:6px;border-radius:18px;box-shadow:var(--shadow);margin-bottom:12px}
+.styles button{padding:8px 4px;border-radius:13px;font-size:13.5px;font-weight:700;color:var(--muted);display:flex;flex-direction:column;align-items:center;line-height:1.3}
+.styles button .e{font-size:19px}
+.styles button.on{background:var(--green-soft);color:var(--green-ink)}
+
+/* Today hero */
+.hero{text-align:center;padding:22px 18px 18px;position:relative;overflow:hidden}
+.hero .label{display:inline-block;background:var(--gold-soft);color:var(--gold-ink);font-weight:700;font-size:13px;padding:3px 12px;border-radius:999px}
+.dish-emoji{width:108px;height:108px;margin:16px auto 8px;border-radius:50%;display:grid;place-items:center;font-size:58px;background:radial-gradient(circle at 35% 30%,var(--card) 0,var(--terra-soft) 70%);border:3px solid var(--card);box-shadow:0 0 0 2px var(--terra-soft),0 8px 20px rgba(196,85,45,.18)}
+.hero h2{font-family:'Reem Kufi',serif;font-size:32px;line-height:1.25}
+.fr{font-size:14px;color:var(--muted);direction:ltr;font-style:italic}
+.meta{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:12px 0 6px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--surface);color:var(--muted)}
+.pill.g{background:var(--green-soft);color:var(--green-ink)}
+.pill.t{background:var(--terra-soft);color:var(--terra-ink)}
+.pill.y{background:var(--gold-soft);color:var(--gold-ink)}
+.reason{margin:10px auto 2px;font-size:14.5px;font-weight:600;color:var(--green-ink);max-width:380px}
+.status{margin-top:10px;font-size:14px;padding:8px 12px;border-radius:12px;display:inline-block}
+.status.ok{background:var(--green-soft);color:var(--green-ink);font-weight:700}
+.status.miss{background:var(--terra-soft);color:var(--terra-ink)}
+.addmiss{display:block;margin:8px auto 0;font-size:13.5px;font-weight:800;color:var(--terra-ink);text-decoration:underline;text-underline-offset:4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 10px;border-radius:14px;font-weight:700;font-size:15px;transition:transform .1s,background .2s;text-decoration:none;text-align:center}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--green);color:#fff}
+.btn.primary:hover{background:var(--green-2)}
+.btn.ghost{background:var(--surface);color:var(--ink)}
+.btn.terra{background:var(--terra);color:#fff}
+.btn.wa{background:#25D366;color:#073B1C}
+.btn.full{grid-column:1/-1}
+.btn.done{background:var(--green-soft);color:var(--green-ink)}
+.btn.wide{width:100%;padding:14px}
+.side{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.side b{cursor:pointer;text-decoration:underline;text-decoration-color:var(--gold-ink);text-underline-offset:4px}
+
+.hint{display:flex;gap:12px;align-items:center;background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:16px;padding:12px 14px;font-size:14px;margin-bottom:14px}
+.hint .i{font-size:26px}
+.hint button{color:var(--terra-ink);font-weight:800;text-decoration:underline}
+
+.hist{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none}
+.hist::-webkit-scrollbar{display:none}
+.hist .h{flex:0 0 auto;background:var(--card);border-radius:14px;padding:8px 12px;box-shadow:var(--shadow);font-size:13px;text-align:center;min-width:92px}
+.hist .h .e{font-size:22px}
+
+/* Ingredients */
+.ing-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.count{font-weight:800;font-size:18px}
+.count span{color:var(--green-ink)}
+.grp{margin-top:16px}
+.grp h3{font-size:15px;font-weight:800;margin-bottom:8px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);font-size:14.5px;font-weight:600;transition:all .15s;color:var(--ink)}
+.chip .e{font-size:17px}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 4px 12px rgba(30,107,79,.25)}
+.chip.on::after{content:'✓';font-weight:800;margin-inline-start:2px}
+.chip.new{border-style:dashed}
+.note{font-size:13px;color:var(--muted);background:var(--surface);border-radius:12px;padding:8px 12px;margin-top:6px}
+.linkbtn{color:var(--terra-ink);font-weight:700;font-size:14px;padding:6px 4px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border-radius:14px;padding:10px 14px;margin-top:10px;font-weight:700;font-size:14.5px;width:100%}
+.switch{width:46px;height:26px;border-radius:26px;background:var(--line);position:relative;flex:0 0 46px;transition:background .2s}
+.switch::after{content:'';position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:right .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.switch.on{background:var(--green)}
+.switch.on::after{right:23px}
+
+/* Recipes list */
+.search{width:100%;font-size:16px;padding:12px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);outline:none}
+.search:focus{border-color:var(--green)}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.f{flex:0 0 auto;padding:6px 14px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);font-size:14px;font-weight:700;color:var(--muted)}
+.f.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.count-line{font-size:13px;color:var(--muted);margin:0 6px 8px}
+.row{display:flex;gap:12px;align-items:center;background:var(--card);border-radius:16px;padding:12px;box-shadow:var(--shadow);margin-bottom:10px;width:100%;text-align:start}
+.row .em{flex:0 0 54px;height:54px;border-radius:14px;background:var(--terra-soft);display:grid;place-items:center;font-size:30px}
+.row .body{flex:1;min-width:0}
+.row .nm{font-weight:800;font-size:16.5px;line-height:1.3;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.row .sub{font-size:12.5px;color:var(--muted)}
+.badge{font-size:11px;font-weight:800;padding:1px 8px;border-radius:999px;background:var(--gold-soft);color:var(--gold-ink)}
+.badge.g{background:var(--green-soft);color:var(--green-ink)}
+.bar{height:6px;background:var(--track);border-radius:6px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--terra);border-radius:6px}
+.bar i.full{background:var(--green)}
+.miss-line{font-size:12.5px;color:var(--terra-ink);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ok-line{font-size:12.5px;color:var(--green-ink);font-weight:700;margin-top:3px}
+.fav{font-size:16px}
+.empty{text-align:center;padding:30px 10px;color:var(--muted)}
+
+/* Week */
+.day{display:flex;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid var(--line)}
+.day:last-child{border-bottom:none}
+.day .dn{flex:0 0 64px;text-align:center}
+.day .dn b{display:block;font-size:14px}
+.day .dn small{color:var(--muted);font-size:12px}
+.day.fri .dn b{color:var(--green-ink)}
+.day .dish{flex:1;display:flex;gap:10px;align-items:center;text-align:start;min-width:0}
+.day .dish .e{font-size:28px}
+.day .swap{flex:0 0 38px;height:38px;border-radius:12px;background:var(--surface);font-size:17px}
+
+/* Shopping list */
+.add-form{display:flex;gap:8px;margin-top:12px}
+.add-form input{flex:1;font-size:16px;padding:11px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);outline:none;min-width:0}
+.add-form input:focus{border-color:var(--green)}
+.add-form button{flex:0 0 auto;padding:0 18px;border-radius:14px;background:var(--green);color:#fff;font-weight:800;font-size:15px}
+.quick{display:flex;gap:6px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.quick::-webkit-scrollbar{display:none}
+.quick button{flex:0 0 auto;padding:5px 12px;border-radius:999px;background:var(--surface);font-size:13.5px;font-weight:700}
+.shoplist{list-style:none;margin-top:6px}
+.si{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.si:last-child{border-bottom:none}
+.si .chk{flex:1;display:flex;align-items:center;gap:12px;text-align:start;min-width:0}
+.si .box{flex:0 0 28px;height:28px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:#fff;transition:all .15s}
+.si .nm{font-size:16px;font-weight:700;line-height:1.35}
+.si .for{display:block;font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si.done .box{background:var(--green);border-color:var(--green)}
+.si.done .nm{text-decoration:line-through;color:var(--muted)}
+.si .del{flex:0 0 34px;height:34px;border-radius:10px;color:var(--muted);font-size:15px}
+.si .del:hover{background:var(--surface)}
+.progress{height:8px;border-radius:8px;background:var(--track);overflow:hidden;margin:10px 0 2px}
+.progress i{display:block;height:100%;background:var(--green);transition:width .3s}
+.sugg{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+.sugg button{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;border:1.5px dashed var(--line);background:var(--card);font-size:14px;font-weight:700}
+.sugg button::before{content:'+';color:var(--green-ink);font-weight:900}
+.copybox{width:100%;min-height:140px;margin-top:10px;font-size:15px;padding:10px;border-radius:12px;border:1.5px solid var(--green);background:var(--card);color:var(--ink)}
+
+/* Bottom nav */
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20;padding-bottom:env(safe-area-inset-bottom)}
+nav .wrap{display:grid;grid-template-columns:repeat(5,1fr);padding:0 6px}
+nav button{padding:8px 0 10px;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12px;font-weight:700;color:var(--muted);position:relative}
+nav button .e{font-size:22px;filter:grayscale(.6);opacity:.7;transition:all .15s}
+nav button.on{color:var(--green-ink)}
+nav button.on .e{filter:none;opacity:1;transform:translateY(-2px)}
+nav .dot{position:absolute;top:4px;left:calc(50% - 20px);min-width:18px;height:18px;border-radius:9px;background:var(--terra);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 4px}
+
+/* Sheet */
+.overlay{position:fixed;inset:0;background:var(--overlay);z-index:40;display:none;align-items:flex-end;justify-content:center}
+.overlay.on{display:flex;animation:fade .2s}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:28px 28px 0 0;padding:10px 18px 30px;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.grab{width:44px;height:5px;border-radius:5px;background:var(--line);margin:4px auto 10px}
+.close{position:sticky;top:0;float:left;width:36px;height:36px;border-radius:50%;background:var(--card);box-shadow:var(--shadow);font-size:18px;z-index:2}
+.sheet .head{text-align:center;clear:both}
+.fact{background:var(--gold-soft);border-radius:14px;padding:10px 14px;font-size:14px;margin:12px 0;display:flex;gap:8px}
+.ilist{list-style:none}
+.ilist li{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:15px}
+.ilist li:last-child{border-bottom:none}
+.ilist .st{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;flex:0 0 24px}
+.st.y{background:var(--green-soft);color:var(--green-ink)}
+.st.n{background:var(--terra-soft);color:var(--terra-ink)}
+.st.o{background:var(--surface);color:var(--muted)}
+.ilist .tag{margin-inline-start:auto;font-size:12px;color:var(--muted)}
+.steps{list-style:none;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:4px 44px 12px 0;font-size:15.5px}
+.steps li::before{content:counter(s);position:absolute;right:0;top:4px;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;display:grid;place-items:center;font-size:14px}
+.tip{background:var(--green-soft);color:var(--green-ink);border-radius:14px;padding:10px 14px;font-size:14px;margin-top:6px}
+.sheet h4{font-size:17px;font-weight:800;margin:18px 0 8px}
+.install-steps{list-style:none;counter-reset:i}
+.install-steps li{counter-increment:i;position:relative;padding:10px 46px 10px 0;font-size:16px;border-bottom:1px solid var(--line)}
+.install-steps li:last-child{border-bottom:none}
+.install-steps li::before{content:counter(i);position:absolute;right:0;top:10px;width:32px;height:32px;border-radius:50%;background:var(--terra);color:#fff;font-weight:800;display:grid;place-items:center}
+.kbd{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:0 8px;font-weight:800}
+
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:60;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.foot{text-align:center;font-size:12px;color:var(--muted);margin:26px 0 8px}
+.foot button{color:var(--terra-ink);font-weight:800;font-size:13px;text-decoration:underline;text-underline-offset:3px;margin-top:6px}
+
+/* Meal mini cards */
+.mcard{padding:12px 14px}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.mlabel{font-weight:800;font-size:15px;color:var(--green-ink)}
+.mre{width:36px;height:36px;border-radius:12px;background:var(--surface);font-size:16px}
+.mrow{display:flex;align-items:center;gap:12px;width:100%;text-align:start}
+.mrow .em{flex:0 0 50px;height:50px;border-radius:14px;background:var(--terra-soft);display:grid;place-items:center;font-size:28px}
+.mrow .body{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.mrow .body b{font-size:17px}
+.mrow .body small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrow .chev{font-size:22px;color:var(--muted);flex:0 0 auto}
+.family{border:2px solid var(--gold-line);background:linear-gradient(180deg,var(--gold-soft),var(--card) 70%)}
+.fam-rows{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+.fam-rows .mrow{background:var(--card);border-radius:14px;padding:8px;box-shadow:var(--shadow)}
+.share .t{font-size:16px}
+.day .meals{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.meal-line{display:flex;gap:8px;align-items:center;padding:3px 0}
+.meal-line .ml{flex:0 0 20px;font-size:15px;text-align:center}
+.meal-line .swap{flex:0 0 34px;height:34px}
+.day .dish .e{font-size:24px}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="greet" id="greet">مرحبا يا يمّا</div>
+        <h1>واش نطيبو اليوم؟</h1>
+        <div class="date" id="today-date"></div>
+      </div>
+      <div class="hdr-side">
+        <div class="flag">🇩🇿</div>
+        <button class="theme-btn" id="theme-btn" aria-label="الوضع الليلي">🌙</button>
+      </div>
+    </div>
+    <div id="banner"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view on" id="v-today"></section>
+
+  <section class="view" id="v-have">
+    <div class="card">
+      <div class="ing-top">
+        <div class="count">واش كاين في الكوزينة؟ <span id="have-count"></span></div>
+        <button class="linkbtn" id="clear-have">مسح الكل</button>
+      </div>
+      <div class="note">🧂 الملح، الزيت، السكر، الماء والتوابل (فلفل، كمون، رأس الحانوت، قرفة، فانيلا) نحسبوهم ديما كاينين.</div>
+      <button class="toggle-row" id="oven-row"></button>
+      <div id="ing-groups"></div>
+    </div>
+    <button class="btn primary wide" data-go="today">✨ شوفي اقتراح اليوم</button>
+  </section>
+
+  <section class="view" id="v-list">
+    <div class="card" style="padding:14px">
+      <input class="search" id="search" type="search" placeholder="🔍 قلّبي على طبق... (رشتة، بيتزا، Gratin)">
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="count-line" id="list-count"></div>
+    <div id="list"></div>
+  </section>
+
+  <section class="view" id="v-week"></section>
+
+  <section class="view" id="v-shop"></section>
+
+  <div class="foot">مطبخ يمّا · <span id="dish-total"></span> من كامل الجزائر 🇩🇿<br><button id="install-btn">📲 كيفاش نحطّوه في التيليفون؟</button></div>
+</main>
+
+<nav>
+  <div class="wrap">
+    <button data-go="today" class="on"><span class="e">🍲</span>اليوم</button>
+    <button data-go="have"><span class="e">🧺</span>واش عندي</button>
+    <button data-go="list"><span class="e">📖</span>الأطباق</button>
+    <button data-go="week"><span class="e">📅</span>الأسبوع</button>
+    <button data-go="shop"><span class="e">🛒</span>المشتريات</button>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ INGREDIENTS ============ */
+const GROUPS=[
+  {id:'p',ar:'🥩 لحم، دجاج، حوت وبيض'},
+  {id:'v',ar:'🥕 الخضرة'},
+  {id:'g',ar:'🌾 العجائن، الحبوب والبقول'},
+  {id:'d',ar:'🧀 الحليب، الفرماج والكريمة'},
+  {id:'s',ar:'🍯 للحلويات'},
+  {id:'o',ar:'🧺 حوايج أخرى'}
+];
+const ING={
+  meat:{ar:'لحم',e:'🥩',g:'p'}, chicken:{ar:'دجاج',e:'🍗',g:'p'}, kefta:{ar:'لحم مرحي (كفتة)',e:'🧆',g:'p'},
+  fish:{ar:'حوت',e:'🐟',g:'p'}, sardine:{ar:'سردين',e:'🐠',g:'p'}, tuna:{ar:'تون',e:'🐡',g:'p',n:1},
+  merguez:{ar:'مرقاز',e:'🌭',g:'p'}, cachir:{ar:'كاشير',e:'🥓',g:'p',n:1}, egg:{ar:'بيض',e:'🥚',g:'p'},
+
+  onion:{ar:'بصل',e:'🧅',g:'v'}, garlic:{ar:'ثوم',e:'🧄',g:'v'}, tomato:{ar:'طماطم',e:'🍅',g:'v'}, potato:{ar:'بطاطا',e:'🥔',g:'v'},
+  carrot:{ar:'زرودية',e:'🥕',g:'v'}, zucchini:{ar:'قرعة (كوسة)',e:'🥒',g:'v'}, turnip:{ar:'لفت',e:'⚪',g:'v'}, eggplant:{ar:'بادنجان',e:'🍆',g:'v'},
+  pepper:{ar:'فلفل',e:'🫑',g:'v'}, greenbeans:{ar:'لوبيا خضراء',e:'🥢',g:'v'}, peas:{ar:'جلبانة',e:'🫛',g:'v'},
+  mushroom:{ar:'شومبينيو (فطر)',e:'🍄',g:'v',n:1}, cauliflower:{ar:'شوفلور',e:'🥦',g:'v',n:1}, cabbage:{ar:'كرومب (ملفوف)',e:'🥬',g:'v',n:1},
+  beetroot:{ar:'بيتراف',e:'🟥',g:'v',n:1},
+  celery:{ar:'كرافس',e:'🌱',g:'v'}, herbs:{ar:'قصبر ومعدنوس',e:'🌿',g:'v'}, lemon:{ar:'قارص (ليم)',e:'🍋',g:'v'}, olives:{ar:'زيتون',e:'🫒',g:'v'},
+
+  couscous:{ar:'كسكسي (طعام)',e:'🥣',g:'g'}, rechta:{ar:'رشتة',e:'🍜',g:'g'}, chakhchoukha:{ar:'رقاق الشخشوخة',e:'🫓',g:'g'},
+  berkoukes:{ar:'بركوكس',e:'🔘',g:'g'}, tlitli:{ar:'تليتلي',e:'🌾',g:'g'}, frik:{ar:'فريك',e:'🌾',g:'g'}, dchicha:{ar:'دشيشة (شيشة)',e:'🌾',g:'g'},
+  vermicelli:{ar:'شعرية (دويدة)',e:'〰️',g:'g'}, pasta:{ar:'مقرونة',e:'🍝',g:'g'}, lasagna:{ar:'ورق اللازانيا',e:'🟫',g:'g',n:1}, rice:{ar:'روز',e:'🍚',g:'g'},
+  lentils:{ar:'عدس',e:'🟤',g:'g'}, chickpeas:{ar:'حمص',e:'🟡',g:'g'}, whitebeans:{ar:'لوبيا بيضاء',e:'🫘',g:'g'},
+  flour:{ar:'فرينة / سميد',e:'🌾',g:'g'}, chickflour:{ar:'فرينة الحمص',e:'🟨',g:'g'}, bread:{ar:'خبز',e:'🥖',g:'g'},
+  tortilla:{ar:'تورتيا (خبز التاكوس)',e:'🌯',g:'g',n:1}, dyouls:{ar:'ديول (ورق البوراك)',e:'📜',g:'g'}, breadcrumbs:{ar:'شابلور',e:'🍞',g:'g',n:1},
+
+  milk:{ar:'حليب',e:'🥛',g:'d'}, cheese:{ar:'فرماج (جبن)',e:'🧀',g:'d'}, cream:{ar:'كريمة فريش',e:'🍶',g:'d',n:1},
+  yogurt:{ar:'ياغورت / رايب',e:'🥄',g:'d',n:1}, smen:{ar:'سمن / زبدة',e:'🧈',g:'d'},
+
+  tpaste:{ar:'طماطم مصبّرة',e:'🥫',g:'o'}, yeast:{ar:'خميرة (لوفير)',e:'🫧',g:'o',n:1}, mayo:{ar:'مايونيز',e:'🫙',g:'o',n:1},
+  prunes:{ar:'برقوق يابس',e:'🟣',g:'o'}, raisins:{ar:'زبيب',e:'🍇',g:'o'},
+  honey:{ar:'عسل',e:'🍯',g:'s',n:1}, dates:{ar:'تمر / غرس',e:'🌴',g:'s',n:1}, almonds:{ar:'لوز',e:'🌰',g:'s'},
+  chocolate:{ar:'شوكولا / كاكاو',e:'🍫',g:'s',n:1}, bakingpowder:{ar:'خميرة الحلويات',e:'🧁',g:'s',n:1},
+  orangeblossom:{ar:'ماء الزهر',e:'🌸',g:'s',n:1}, jam:{ar:'كونفيتور',e:'🍓',g:'s',n:1}
+};
+ING.__oven={ar:'فور (كوشة)',e:'🔥',g:'x'};
+
+const DISHES_OLD=[
+{id:'chorba_frik',ar:'شربة فريك',fr:'Chorba frik',e:'🍲',type:'soup',time:75,diff:2,season:'winter',ramadan:true,region:'كامل الجزائر',
+ fact:'نجمة مائدة رمضان في الجزائر، وتتسمى «الجاري» في بزاف ولايات.',
+ req:[['frik'],['meat','chicken'],['onion'],['tomato','tpaste']],opt:['chickpeas','herbs','celery','carrot'],
+ steps:['قطّعي اللحم قطع صغار وقلّيه مع البصل المرحي، الملح، الفلفل الأكحل والأحمر وشوية قرفة.','زيدي الطماطم (طرية ولا مصبّرة)، الحمص المنقوع، الكرافس وشوية قصبر، وغطّي بالماء.','كي يطيب اللحم، زيدي الفريك شوية بشوية وانتي تحرّكي، وخلّيه 15–20 دقيقة على نار هادئة.','قبل ما تطفي زيدي القصبر والنعناع اليابس، وقدّميها بالقارص والبوراك.'],
+ tip:'الفريك يشرب الماء بزاف، خلّي حداك ماء سخون تزيدي منه.'},
+{id:'harira',ar:'حريرة',fr:'Harira',e:'🍲',type:'soup',time:75,diff:2,season:'winter',ramadan:true,region:'الغرب (وهران، تلمسان)',
+ fact:'من الشربات الأربعة المعروفة في كامل الجزائر مع الفريك، الجاري والشيشة.',
+ req:[['meat','chicken'],['tomato','tpaste'],['flour'],['onion']],opt:['chickpeas','lentils','herbs','celery'],
+ steps:['قلّي اللحم مع البصل والتوابل، زيدي الطماطم، الحمص، العدس والكرافس وغطّيه بالماء.','كي يطيب، ذوّبي جوج ملاعق فرينة في كاس ماء بارد (التدويرة).','صبّي التدويرة شوية بشوية وانتي تحرّكي باش تتخثّر، وزيدي القصبر والمعدنوس.','خلّيها 10 دقايق على نار هادئة، وقدّميها بالقارص والتمر.']},
+{id:'chorba_beida',ar:'شربة بيضاء',fr:'Chorba beida',e:'🥣',type:'soup',time:50,diff:1,season:'winter',ramadan:true,region:'العاصمة',
+ fact:'شربة بلا طماطم، بالدجاج والحمص والشعرية، معروفة في العاصمة.',
+ req:[['chicken'],['vermicelli','rice'],['onion']],opt:['chickpeas','egg','lemon','herbs','smen'],
+ steps:['طيّبي الدجاج مع البصل المرحي، السمن، الملح، الفلفل الأكحل والقرفة — بلا طماطم.','زيدي الحمص وغطّي بالماء وخلّيه يطيب.','زيدي الشعرية (ولا شوية روز) وخلّيها 10 دقايق.','بلّعي النار، وزيدي صفار بيضة مخلوط بالقارص وانتي تحرّكي، ومن فوق المعدنوس.'],
+ tip:'ما تخلّيهاش تغلي بعد البيض باش ما يتفرّقش.'},
+{id:'tchicha',ar:'شربة الشيشة',fr:'Chorba dchicha',e:'🍲',type:'soup',time:45,diff:1,season:'winter',ramadan:true,region:'الشرق والوسط',
+ req:[['dchicha'],['onion'],['tomato','tpaste']],opt:['meat','chicken','potato','carrot','herbs'],
+ steps:['قلّي البصل (واللحم إذا كاين) مع التوابل والطماطم.','زيدي البطاطا والزرودية مقطّعين صغار وغطّي بالماء.','كي تغلي، زيدي الدشيشة شوية بشوية وانتي تحرّكي، وخلّيها 20 دقيقة.','زيدي القصبر في الأخير.'],
+ tip:'بشوية حار وقطرة زيت زيتونة من فوق تولّي بنينة بزاف.'},
+{id:'chorba_vermicelle',ar:'شربة الشعرية',fr:'Chorba vermicelle',e:'🍜',type:'soup',time:30,diff:1,season:'winter',region:'كل دار',
+ req:[['vermicelli'],['tomato','tpaste'],['onion']],opt:['chicken','meat','potato','carrot','herbs'],
+ steps:['قلّي البصل مع الطماطم والتوابل (واللحم ولا الدجاج إذا كاين).','زيدي البطاطا والزرودية مكعّبات صغار، وغطّي بالماء وخلّيها تطيب.','زيدي الشعرية 8–10 دقايق قبل التقديم.','كمّلي بالقصبر والمعدنوس.'],
+ tip:'شربة العجلة: كي يكون الوقت قليل والجو بارد.'},
+{id:'adess',ar:'عدس بالمرق',fr:'Lentilles à l’algérienne',e:'🥘',type:'stew',time:45,diff:1,season:'winter',region:'كل دار',
+ req:[['lentils'],['onion'],['garlic'],['tomato','tpaste']],opt:['carrot','potato','meat','herbs'],
+ steps:['غسلي العدس مليح.','في الطنجرة: زيت، بصل، ثوم، طماطم وتوابل (كمون، فلفل أحمر، ملح)، قلّبيهم دقيقتين.','زيدي العدس، الزرودية والبطاطا مقطّعين، وغطّي بالماء.','خلّيه 30–35 دقيقة حتى يطيب ويتخثّر المرق، وزيدي القصبر.'],
+ tip:'رخيص ومشبّع، ويجي بنين حتى بلا لحم.'},
+{id:'loubia',ar:'لوبيا بيضاء',fr:'Loubia',e:'🫘',type:'stew',time:70,diff:1,season:'winter',region:'كل دار',
+ req:[['whitebeans'],['onion'],['garlic'],['tomato','tpaste']],opt:['meat','merguez','pepper','herbs'],
+ steps:['نقعي اللوبيا من الليل.','قلّي البصل والثوم مع الطماطم والتوابل (كمون، فلفل أحمر، شوية حار).','زيدي اللوبيا (واللحم ولا المرقاز إذا كاين) وغطّي بالماء، وخلّيها تطيب ساعة تقريبا.','كي تتخثّر، زيدي القصبر وقدّميها بالخبز.'],
+ tip:'إذا ما نقعتيهاش، استعملي الكوكوت مينوت ولا لوبيا معلّبة.'},
+{id:'dobara',ar:'دوبارة',fr:'Doubara',e:'🌶️',type:'stew',time:30,diff:1,season:'all',region:'بسكرة',
+ fact:'طبق شعبي من بسكرة، بالحمص والدرسة الحارة.',
+ req:[['chickpeas'],['garlic'],['tomato','tpaste']],opt:['pepper','lemon','herbs','onion'],
+ steps:['طيّبي الحمص المنقوع حتى يرطب (ولا استعملي حمص معلّب).','حضّري الدرسة: ثوم مرحي مع فلفل أحمر، كمون، كروية وشوية حار.','زيدي الدرسة والطماطم للحمص، وخلّيه يطيب 15 دقيقة.','قدّميها بالقارص، القصبر وقطرة زيت زيتونة.']},
+{id:'couscous',ar:'كسكسي بالخضرة',fr:'Couscous aux légumes',e:'🥣',type:'couscous',time:120,diff:3,season:'all',friday:true,region:'الطبق الوطني',
+ fact:'الكسكسي هو الطبق الوطني، ونادرا ما يخلى غدا الجمعة عند العائلات الجزائرية منه.',
+ req:[['couscous'],['meat','chicken'],['onion'],['carrot','zucchini','turnip','potato']],opt:['chickpeas','carrot','zucchini','turnip','tomato','smen'],
+ steps:['حضّري المرق: اللحم مع البصل، السمن والتوابل (رأس الحانوت، فلفل)، الحمص، وغطّيه بالماء. زيدي الطماطم إذا تحبّيه أحمر.','زيدي الخضرة: الزرودية واللفت أولا، والقرعة في الأخير باش ما تتهرّاش.','فوّري الكسكسي في الكسكاس فوق المرق 3 مرات، وفي كل مرة فرّقيه بشوية ماء وملح وسمن.','قدّميه بالمرق، والخضرة واللحم من فوق.'],
+ tip:'يوم الجمعة ما يكمّلش بلا كسكسي 😄'},
+{id:'rechta',ar:'رشتة',fr:'Rechta',e:'🍜',type:'pasta',time:90,diff:2,season:'winter',region:'العاصمة وقسنطينة',
+ fact:'جات الأولى في قائمة TasteAtlas لأحسن 25 طبق في إفريقيا 🏆',
+ req:[['rechta'],['chicken','meat'],['onion']],opt:['turnip','chickpeas','zucchini','smen'],
+ steps:['مرق أبيض: الدجاج مع البصل، السمن، الملح، الفلفل الأكحل والقرفة، والحمص، وغطّيه بالماء.','زيدي اللفت والقرعة كي يقرب الدجاج يطيب.','فوّري الرشتة على البخار مرتين، وفي كل مرة دهنيها بشوية زيت ولا سمن وفرّقيها.','قدّميها بالمرق الأبيض، والدجاج والخضرة من فوق، ورشّة قرفة.'],
+ tip:'طبق الأعياد والمناسبات، ويفرّح الدار في أي نهار.'},
+{id:'chakhchoukha',ar:'شخشوخة',fr:'Chakhchoukha',e:'🫓',type:'pasta',time:90,diff:2,season:'winter',region:'بسكرة والشرق',
+ fact:'من الأطباق الجزائرية اللي دخلت قائمة TasteAtlas لأحسن أطباق إفريقيا.',
+ req:[['chakhchoukha','flour'],['meat','chicken'],['onion'],['tomato','tpaste']],opt:['chickpeas','potato','zucchini','pepper'],
+ steps:['مرق أحمر: اللحم مع البصل، الطماطم، الفلفل الأحمر والحار، رأس الحانوت والحمص.','زيدي البطاطا ولا القرعة كي يقرب يطيب.','فتّتي الرقاق قطع صغار وفوّريه على البخار.','رشّيه بالمرق وخلّيه يشرب، وقدّميه واللحم من فوق.'],
+ tip:'إذا ما عندكش رقاق جاهز، ديري عجينة سميد رقيقة وطيّبيها في الطاجين.'},
+{id:'berkoukes',ar:'بركوكس',fr:'Berkoukes',e:'🍲',type:'pasta',time:60,diff:1,season:'winter',region:'القبائل والغرب',
+ fact:'طبق الشتاء بامتياز، ثخين كيما الشربة ومشبّع كيما الطاجين.',
+ req:[['berkoukes'],['onion'],['tomato','tpaste']],opt:['meat','chicken','carrot','zucchini','potato','chickpeas','peas'],
+ steps:['مرق أحمر بالبصل والطماطم والتوابل (واللحم إذا كاين).','زيدي الخضرة مقطّعة مكعّبات صغار وغطّي بالماء.','كي تقرب الخضرة تطيب، زيدي البركوكس وخلّيه 20 دقيقة وانتي تحرّكي.','قدّميه سخون بقطرة زيت زيتونة.']},
+{id:'tlitli',ar:'تليتلي',fr:'Tlitli',e:'🌾',type:'pasta',time:60,diff:2,season:'all',region:'قسنطينة والعاصمة',
+ req:[['tlitli'],['chicken'],['onion'],['tomato','tpaste']],opt:['chickpeas','egg'],
+ steps:['مرق أحمر بالدجاج، البصل، الطماطم، القرفة والحمص.','اقلي التليتلي في شوية زيت حتى يحمار شوية.','زيدي عليه المرق شوية بشوية حتى يطيب ويشرب (كيما الروز).','زيّنيه بالبيض المسلوق والدجاج من فوق.']},
+{id:'macaroni',ar:'مقرونة بالمرق',fr:'Makarouna bel marqa',e:'🍝',type:'pasta',time:40,diff:1,season:'all',region:'كل دار',
+ req:[['pasta'],['tomato','tpaste'],['onion']],opt:['chicken','meat','kefta','chickpeas','pepper'],
+ steps:['قلّي البصل مع الدجاج ولا اللحم والتوابل (فلفل أحمر، قرفة، ملح).','زيدي الطماطم والحمص وكاسين ماء، وخلّيه يطيب.','زيدي المقرونة مباشرة في المرق وخلّيها تطيب وتشرب المرق.','قدّميها سخونة بشوية فرماج إذا كاين.'],
+ tip:'الصغار يحبّوها بزاف، وما تدّيش وقت.'},
+{id:'rouz_djej',ar:'روز بالدجاج',fr:'Riz au poulet',e:'🍚',type:'pasta',time:45,diff:1,season:'all',region:'كل دار',
+ req:[['rice'],['chicken'],['onion']],opt:['peas','carrot','tomato','tpaste','chickpeas'],
+ steps:['حمّري الدجاج مع البصل والتوابل (كركم، فلفل أكحل، قرفة).','زيدي الجلبانة والزرودية، وكاس ماء، وخلّيه يطيب شوية.','زيدي الروز المغسول وماء قدّو مرة ونص.','غطّيه وخلّيه على نار هادئة 18 دقيقة بلا ما تحلّيه.']},
+{id:'tajine_zitoune',ar:'طاجين الزيتون',fr:'Tajine zitoune',e:'🫒',type:'stew',time:60,diff:2,season:'all',region:'العاصمة',
+ fact:'جاء السادس في قائمة TasteAtlas لأحسن أطباق إفريقيا 🏆',
+ req:[['chicken','kefta'],['olives'],['carrot','potato']],opt:['onion','lemon','flour'],
+ steps:['غلّي الزيتون في الماء مرتين باش يروح الملح.','طيّبي الدجاج مع البصل، الزيت ولا السمن، الفلفل الأكحل والقرفة في مرق أبيض.','زيدي الزرودية، وكي تقرب تطيب زيدي الزيتون.','خثّري المرق بملعقة فرينة مذوّبة، وزيدي عصرة قارص.'],
+ tip:'كويرات الكفتة تجي فيه بنينة بزاف.'},
+{id:'lham_lahlou',ar:'اللحم الحلو',fr:'Lham lahlou',e:'🍯',type:'stew',time:75,diff:2,season:'all',ramadan:true,region:'كامل الجزائر',
+ fact:'يتطيّب في أول نهار رمضان باش «يكون الشهر حلو».',
+ req:[['meat','chicken'],['prunes','raisins']],opt:['almonds','smen'],
+ steps:['طيّبي اللحم مع شوية سمن، قرفة وماء الزهر.','كي يطيب زيدي السكر، البرقوق والزبيب.','خلّيه على نار هادئة حتى يولّي المرق كيما العسل.','زيّنيه باللوز المقلي.']},
+{id:'chtitha_djej',ar:'شطيطحة دجاج',fr:'Chtitha djej',e:'🌶️',type:'stew',time:50,diff:1,season:'all',region:'العاصمة',
+ req:[['chicken'],['garlic'],['tomato','tpaste']],opt:['chickpeas','onion','pepper'],
+ steps:['حضّري الدرسة: ثوم مرحي مع فلفل أحمر، كمون، كروية وحار.','قلّي الدجاج في الزيت مع الدرسة والطماطم المصبّرة.','زيدي الحمص وكاس ماء، وخلّيه حتى يتخثّر المرق ويحمار.','قدّميه بالخبز السخون.']},
+{id:'chtitha_batata',ar:'شطيطحة بطاطا',fr:'Chtitha batata',e:'🥔',type:'stew',time:35,diff:1,season:'all',region:'كل دار',
+ req:[['potato'],['garlic'],['tomato','tpaste']],opt:['egg','chickpeas','herbs'],
+ steps:['حضّري الدرسة: ثوم، فلفل أحمر، كمون وحار.','قلّبي الدرسة في الزيت مع الطماطم، وزيدي البطاطا مكعّبات.','زيدي الماء وخلّيها تطيب 20 دقيقة.','إذا تحبّي كسّري البيض فوقها في الأخير.'],
+ tip:'طبق بلا لحم، رخيص وبنين.'},
+{id:'mtewem',ar:'المثوّم',fr:'Mtewem',e:'🧄',type:'stew',time:75,diff:2,season:'all',region:'العاصمة',
+ fact:'من أرقى أطباق العاصمة، وسمّوه هكا على جال الثوم الكثير.',
+ req:[['kefta'],['garlic']],opt:['chickpeas','meat','rice','egg','herbs'],
+ steps:['خلطي الكفتة مع ثوم مرحي بزاف، معدنوس، ملح وكمون، وديري منها كويرات.','حضّري مرق باللحم والحمص والثوم.','حطّي الكويرات في المرق وخلّيها تطيب 20 دقيقة.','قدّميه بالخبز.']},
+{id:'dolma',ar:'دولمة',fr:'Dolma',e:'🫑',type:'stew',time:75,diff:2,season:'summer',region:'العاصمة',
+ req:[['kefta'],['zucchini','pepper','potato','eggplant'],['onion']],opt:['rice','chickpeas','tomato','egg'],
+ steps:['فرّغي الخضرة (قرعة، فلفل ولا بطاطا).','خلطي الكفتة مع البصل المرحي، المعدنوس، شوية روز، ملح وفلفل، وعمّري بيها الخضرة.','حضّري مرق (أبيض ولا أحمر) بالبصل والحمص.','حطّي الخضرة المعمّرة في المرق وخلّيها تطيب على نار هادئة.']},
+{id:'kefta_bid',ar:'طاجين الكفتة بالبيض',fr:'Tajine kefta',e:'🍳',type:'stew',time:40,diff:1,season:'all',region:'كل دار',
+ req:[['kefta'],['tomato','tpaste'],['onion']],opt:['egg','pepper','herbs','garlic'],
+ steps:['ديري كويرات من الكفتة مع البصل المرحي والمعدنوس والكمون.','حضّري صلصة الطماطم بالثوم والتوابل في المقلاة.','حطّي الكويرات في الصلصة وخلّيهم 15 دقيقة.','كسّري البيض بيناتهم وغطّي حتى يطيب.']},
+{id:'jelbana',ar:'طاجين الجلبانة',fr:'Jelbana',e:'🫛',type:'stew',time:60,diff:1,season:'all',region:'كل دار',
+ req:[['peas'],['meat','chicken'],['onion']],opt:['potato','carrot','egg','herbs'],
+ steps:['طيّبي اللحم مع البصل، الزيت، الملح، الفلفل الأكحل والقرفة.','زيدي الماء وخلّيه يطيب.','زيدي الجلبانة والبطاطا والزرودية، وخلّيهم حتى يطيبو.','كمّلي بالمعدنوس، وإذا تحبّي بيض مخفوق في الأخير.']},
+{id:'loubia_khadra',ar:'طاجين اللوبيا الخضراء',fr:'Haricots verts en sauce',e:'🥢',type:'stew',time:55,diff:1,season:'summer',region:'كل دار',
+ req:[['greenbeans'],['onion'],['tomato','tpaste']],opt:['meat','chicken','potato','garlic'],
+ steps:['قلّي البصل مع اللحم (إذا كاين) والتوابل.','زيدي الطماطم وشوية ماء.','زيدي اللوبيا مقطّعة والبطاطا، وخلّيها تطيب 30 دقيقة.']},
+{id:'mderbel',ar:'مدربل',fr:'Mderbel',e:'🍆',type:'stew',time:60,diff:2,season:'summer',region:'العاصمة',
+ fact:'طبق عاصمي قديم، ويتسمّى في الغرب «البرانية».',
+ req:[['eggplant'],['garlic'],['tomato','tpaste']],opt:['meat','chicken','chickpeas'],
+ steps:['قطّعي البادنجان شرائح، ملّحيها وخلّيها ترتاح، من بعد اقليها.','حضّري مرق باللحم، الثوم، الطماطم، الكمون والحمص.','زيدي البادنجان المقلي للمرق مع رشّة خل، وخلّيه يشرب 10 دقايق على نار هادئة.']},
+{id:'tajine_jben',ar:'طاجين الجبن',fr:'Tajine el jben',e:'🧀',type:'stew',time:60,diff:2,season:'all',region:'قسنطينة',
+ fact:'أصلو من قسنطينة، وكانو يسمّوه «طاجين بونارين».',
+ req:[['egg'],['cheese'],['chicken','meat']],opt:['onion','chickpeas','flour','herbs'],
+ steps:['مرق أبيض بالدجاج، البصل، القرفة والحمص.','خلطي الجبن المهرّس مع البيض، المعدنوس وشوية فرينة.','ديري منها أقراص صغار واقليهم.','حطّيهم في المرق 5 دقايق قبل التقديم.']},
+{id:'tajine_khoukh',ar:'طاجين الخوخ',fr:'Tajine el khoukh',e:'🥔',type:'stew',time:75,diff:3,season:'all',region:'العاصمة',
+ fact:'يسمّوه «المخادع للبصر»: يشبه الخوخ وهو طبق مالح!',
+ req:[['potato'],['kefta'],['egg']],opt:['chicken','cheese','flour','herbs'],
+ steps:['اسلقي البطاطا ورحيها مع بيضة، ملح ومعدنوس.','غلّفي كويرات كفتة بعجينة البطاطا، دوّريها في الفرينة والبيض واقليها.','حضّري مرق أبيض بالدجاج والقرفة.','حطّي الكويرات في المرق وقت التقديم.']},
+{id:'sfiriya',ar:'سفيرية',fr:'Sfiria',e:'🍞',type:'stew',time:75,diff:2,season:'all',ramadan:true,region:'العاصمة',
+ req:[['chicken'],['bread'],['egg']],opt:['cheese','chickpeas','almonds','onion','milk','smen'],
+ steps:['مرق أبيض بالدجاج، البصل، السمن، القرفة والحمص.','بلّي الخبز بالحليب وعصريه، واخلطيه مع البيض، الجبن والقرفة.','ديري أقراص واقليهم.','حطّيهم في المرق قبل التقديم، وزيّني باللوز.']},
+{id:'chekchouka',ar:'شكشوكة',fr:'Chekchouka',e:'🍳',type:'light',time:30,diff:1,season:'all',region:'كل الجزائر',
+ req:[['tomato'],['pepper'],['onion']],opt:['egg','merguez','garlic','zucchini'],
+ steps:['قلّي البصل والفلفل مقطّعين في الزيت.','زيدي الطماطم مقطّعة، الثوم، الملح والفلفل الأحمر وخلّيها حتى تتخثّر.','كسّري البيض من فوق وغطّيها حتى يطيب.','قدّميها بالخبز ولا الكسرة.'],
+ tip:'بالمرقاز تولّي عشا كامل.'},
+{id:'mhadjeb',ar:'محاجب',fr:'Mhadjeb',e:'🫓',type:'light',time:60,diff:2,season:'all',region:'كل الجزائر',
+ req:[['flour'],['tomato'],['onion']],opt:['pepper','garlic'],
+ steps:['عجني السميد الرقيق بالماء، الملح والزيت عجينة طرية وخلّيها ترتاح.','الحشوة: بصل، طماطم وفلفل مطيّبين حتى ينشف الماء.','قسمي العجينة كويرات، مدّيها رقيقة، حطّي الحشوة واطويها.','طيّبيها في الطاجين ولا المقلاة.']},
+{id:'karantika',ar:'كرانطيطة',fr:'Karantika',e:'🟨',type:'oven',time:45,diff:1,season:'all',region:'وهران والعاصمة',
+ req:[['chickflour']],opt:['egg','milk','garlic'],
+ steps:['خلطي كاس فرينة حمص مع كاسين ونص ماء، ملح، كمون وشوية زيت، وخلّيه يرتاح.','زيدي بيضة (إذا تحبّي) وصبّيه في صينية مدهونة.','دخّليه للفور 200° حتى يحمار الوجه (30–40 دقيقة).','قدّميه بالكمون والهريسة في الخبز.']},
+{id:'omelette_frites',ar:'أومليت بالبطاطا',fr:'Omelette frites',e:'🍳',type:'light',time:25,diff:1,season:'all',region:'كل دار',
+ req:[['potato'],['egg']],opt:['onion','cheese','herbs'],
+ steps:['قطّعي البطاطا واقليها.','اخفقي البيض مع الملح، الفلفل والمعدنوس.','صبّي البيض على البطاطا في المقلاة وخلّيه يطيب على نار هادئة.']},
+{id:'maakouda',ar:'معقودة',fr:'Maakouda',e:'🥔',type:'light',time:40,diff:1,season:'all',region:'كل الجزائر',
+ req:[['potato'],['egg']],opt:['garlic','herbs','cheese'],
+ steps:['اسلقي البطاطا ورحيها.','زيدي البيض، الثوم، المعدنوس، الملح والكمون.','ديري أقراص واقليهم حتى يحمارو.','قدّميهم في الخبز ولا مع شربة.']},
+{id:'sardine_kefta',ar:'كفتة السردين بالمرق',fr:'Boulettes de sardines',e:'🐟',type:'fish',time:60,diff:2,season:'all',region:'العاصمة والساحل',
+ req:[['sardine'],['garlic'],['tomato','tpaste']],opt:['rice','egg','herbs','onion'],
+ steps:['نقّي السردين ونحّي الشوك، ورحيه مع الثوم، المعدنوس، الكمون وشوية روز مطيّب.','ديري كويرات صغار.','مرق أحمر بالطماطم والثوم والكمون، وطيّبي فيه الكويرات 15–20 دقيقة.'],
+ tip:'السردين رخيص وفيه الصحة.'},
+{id:'sardine_frit',ar:'سردين مشرمل مقلي',fr:'Sardines frites',e:'🐠',type:'fish',time:30,diff:1,season:'summer',region:'الساحل',
+ req:[['sardine'],['flour']],opt:['garlic','lemon','herbs'],
+ steps:['نقّي السردين وشرمليه: ثوم، كمون، فلفل أحمر، معدنوس وقارص.','دوّريه في الفرينة.','اقليه في زيت سخون وقدّميه بالقارص وسلاطة.']},
+{id:'tajine_hout',ar:'طاجين الحوت في الفور',fr:'Tajine de poisson',e:'🐟',type:'fish',time:50,diff:1,season:'all',region:'الساحل',
+ req:[['fish','sardine'],['potato'],['tomato','tpaste']],opt:['garlic','pepper','lemon','olives'],
+ steps:['شرملي الحوت بالثوم، الكمون، الفلفل الأحمر، المعدنوس والقارص.','فرشي البطاطا شرائح في صينية، والحوت من فوق.','زيدي الطماطم، الفلفل والزيتون وشوية ماء.','دخّليه للفور 180° قريب 35 دقيقة.']},
+{id:'batata_koucha',ar:'بطاطا كوشة',fr:'Gratin de pommes de terre',e:'🥔',type:'oven',time:60,diff:1,season:'all',region:'كل دار',
+ req:[['potato'],['kefta','chicken'],['tomato','tpaste']],opt:['egg','cheese','onion','pepper'],
+ steps:['حضّري صلصة: كفتة (ولا دجاج) مع البصل والطماطم والتوابل.','فرشي البطاطا شرائح في صينية، والصلصة من فوق.','زيدي البيض المخفوق والفرماج.','دخّليها للفور 180° حتى تطيب البطاطا ويحمار الوجه.']},
+{id:'mesfouf',ar:'مسفوف',fr:'Mesfouf',e:'🥣',type:'light',time:40,diff:1,season:'all',region:'كل الجزائر',
+ req:[['couscous'],['peas','raisins']],opt:['smen','milk'],
+ steps:['فوّري الكسكسي على البخار مرتين.','في المرة الثانية زيدي الجلبانة (ولا الزبيب) معاه في الكسكاس.','فرّقيه بالسمن ولا الزبدة.','قدّميه بكاس لبن ولا حليب.'],
+ tip:'عشا خفيف وكلاسيكي.'},
+/* sides */
+{id:'bourek',ar:'بوراك',fr:'Bourek',e:'🥟',type:'side',time:40,diff:1,season:'all',region:'كامل الجزائر',
+ req:[['dyouls'],['kefta','chicken','cheese']],opt:['onion','egg','herbs'],
+ steps:['حضّري الحشوة: كفتة مطيّبة مع البصل والمعدنوس (ولا دجاج ولا فرماج).','لفّي الحشوة في الديول.','اقليهم حتى يحمارو.']},
+{id:'hmiss',ar:'حميس (سلاطة مشوية)',fr:'Hmiss',e:'🫑',type:'side',time:30,diff:1,season:'all',region:'كامل الجزائر',
+ req:[['pepper'],['tomato']],opt:['garlic'],
+ steps:['اشوي الفلفل والطماطم على النار ولا في الفور.','قشّريهم وقطّعيهم صغار.','زيدي الثوم، الملح وزيت الزيتونة.']},
+{id:'slata',ar:'سلاطة خضرة',fr:'Salade',e:'🥗',type:'side',time:10,diff:1,season:'all',region:'كل دار',
+ req:[['tomato'],['onion']],opt:['pepper','lemon','herbs'],
+ steps:['قطّعي الطماطم والبصل والفلفل صغار.','زيدي الملح، القارص وزيت الزيتونة.']},
+{id:'kesra',ar:'كسرة',fr:'Kesra',e:'🫓',type:'side',time:40,diff:1,season:'all',region:'كامل الجزائر',
+ req:[['flour']],opt:['smen'],
+ steps:['اخلطي السميد مع الملح والزيت (ولا السمن) والماء حتى تولّي عجينة.','افرديها دائرة وطيّبيها في الطاجين من الجهتين.']}
+];
+
+/* ============ NEW: MODERN & SPECIAL DISHES ============ */
+const DISHES_NEW=[
+/* --- Gratins & oven --- */
+{id:'gratin_pates',ar:'غراتان المقرونة بالبشاميل',fr:'Gratin de pâtes à la béchamel',e:'🫕',type:'oven',time:40,diff:1,season:'winter',modern:1,kids:1,oven:1,region:'عصري',
+ fact:'الغراتان ولّى من أكثر الأطباق العصرية في الدار الجزائرية، حتى سميرة تي في دارت عليه كتاب كامل.',
+ req:[['pasta'],['milk'],['flour'],['cheese']],opt:['chicken','kefta','tuna','mushroom','smen','cream'],
+ steps:['اسلقي المقرونة نص طيبة وصفّيها.','البشاميل: ذوّبي الزبدة، زيدي جوج ملاعق فرينة، ومن بعد الحليب شوية بشوية وانتي تخلطي حتى يتخثّر. ملح، فلفل وجوزة الطيب.','خلطي المقرونة مع البشاميل ونص الفرماج (والدجاج ولا اللحم إذا كاين).','صبّيها في صينية، الفرماج من فوق، وفي الفور 200° قريب 20 دقيقة حتى يحمار.'],
+ tip:'الصغار يحبّوه بزاف، وتقدري تخرجي بيه بقايا الدجاج.'},
+{id:'gratin_batata_djej',ar:'غراتان البطاطا بالدجاج',fr:'Gratin de pommes de terre au poulet',e:'🥔',type:'oven',time:60,diff:1,season:'all',modern:1,kids:1,oven:1,ramadan:1,region:'عصري',
+ req:[['potato'],['chicken'],['milk'],['cheese']],opt:['onion','garlic','herbs','mushroom','olives','flour','smen'],
+ steps:['قطّعي البطاطا روندال واقليها شوية (هذي هي اللمسة الجزائرية).','حمّري الدجاج مكعّبات مع البصل والثوم، الملح، الفلفل والمعدنوس.','فرشي البطاطا والدجاج طبقات في صينية.','غطّيهم بالبشاميل مخلوط بالفرماج، ودخّليهم للفور حتى يحمار الوجه.']},
+{id:'dauphinois',ar:'غراتان دوفينوا',fr:'Gratin dauphinois',e:'🥔',type:'oven',time:75,diff:1,season:'winter',modern:1,oven:1,region:'عصري',
+ req:[['potato'],['milk','cream'],['garlic']],opt:['cheese','cream','chicken','smen'],
+ steps:['قطّعي البطاطا شرائح رقاق.','حكّي الصينية بفص ثوم ودهنيها بالزبدة.','فرشي البطاطا طبقات، وملّحي وفلفلي كل طبقة.','صبّي فوقها الحليب السخون والكريمة، زيدي الفرماج، وفي الفور 180° قريب ساعة.'],
+ tip:'يليق بزاف مع الدجاج في الفور.'},
+{id:'gratin_choufleur',ar:'غراتان الشوفلور',fr:'Gratin de chou-fleur',e:'🥦',type:'oven',time:45,diff:1,season:'winter',modern:1,oven:1,ramadan:1,region:'عصري',
+ req:[['cauliflower'],['milk'],['egg'],['cheese']],opt:['flour','potato','kefta','chicken','smen'],
+ steps:['اسلقي الشوفلور 8–10 دقايق وصفّيه مليح.','حضّري البشاميل وزيدي فيه بيضة ولا جوج.','خلطي الشوفلور مع البشاميل (واللحم المطيّب إذا كاين).','الفرماج من فوق، وفي الفور 25 دقيقة.'],
+ tip:'طريقة رخيصة وبنينة تخرجي بيها شوفلور الشتاء.'},
+{id:'gratin_courgette',ar:'غراتان القرعة',fr:'Gratin de courgettes',e:'🥒',type:'oven',time:45,diff:1,season:'summer',modern:1,oven:1,region:'عصري',
+ req:[['zucchini'],['egg'],['cheese']],opt:['milk','kefta','chicken','potato','carrot'],
+ steps:['قطّعي القرعة روندال وقلّبيها شوية في المقلاة، ونحّي الماء تاعها.','اخفقي البيض مع الحليب، الفرماج، الملح والفلفل.','خلطيهم وصبّيهم في صينية.','في الفور 30 دقيقة.'],
+ tip:'عشا خفيف يليق للصيف.'},
+{id:'gratin_thon',ar:'غراتان البطاطا بالتون',fr:'Gratin de pommes de terre au thon',e:'🐡',type:'oven',time:50,diff:1,season:'all',modern:1,oven:1,ramadan:1,region:'عصري',
+ req:[['potato'],['tuna'],['milk'],['cheese']],opt:['olives','egg','herbs','flour'],
+ steps:['اسلقي البطاطا روندال.','فرفري التون.','فرشي البطاطا، التون والبشاميل طبقات.','الفرماج من فوق، وفي الفور حتى يحمار.']},
+{id:'souffle_batata',ar:'سوفلي البطاطا في الفور',fr:'Soufflé de pommes de terre',e:'🥔',type:'oven',time:50,diff:1,season:'all',modern:1,kids:1,oven:1,region:'عصري',
+ req:[['potato'],['egg'],['cheese']],opt:['milk','kefta','chicken','herbs'],
+ steps:['اسلقي البطاطا ورحيها.','زيدي البيض، الحليب، الفرماج، الملح والفلفل وخلطي مليح.','إذا تحبّي، ديري طبقة كفتة مطيّبة في الوسط.','في الفور حتى ينفخ ويحمار.'],
+ tip:'كي ما يبقاش في الدار غير البطاطا والبيض 😉'},
+{id:'moussaka',ar:'موساكا',fr:'Moussaka à l’algérienne',e:'🍆',type:'oven',time:90,diff:2,season:'summer',modern:1,guests:1,oven:1,region:'عصري',
+ req:[['eggplant'],['kefta'],['tomato','tpaste'],['milk'],['cheese']],opt:['potato','onion','flour'],
+ steps:['قطّعي البادنجان شرائح واقليه (ولا اشويه في الفور).','طيّبي الكفتة مع البصل والطماطم.','فرشي: بادنجان، كفتة، بادنجان.','غطّي بالبشاميل والفرماج، وفي الفور 40 دقيقة.']},
+{id:'lasagne',ar:'لازانيا',fr:'Lasagnes',e:'🟫',type:'oven',time:90,diff:2,season:'all',modern:1,guests:1,kids:1,oven:1,region:'عصري',
+ req:[['lasagna','pasta'],['kefta','chicken'],['tomato','tpaste'],['milk'],['cheese']],opt:['mushroom','onion','garlic','flour'],
+ steps:['طيّبي الكفتة مع البصل، الثوم والطماطم حتى تولّي صلصة ثخينة.','حضّري البشاميل.','فرشي ورق اللازانيا، الصلصة والبشاميل 3 ولا 4 طبقات.','الفرماج من فوق، وفي الفور 40 دقيقة.']},
+{id:'gratin_poele',ar:'غراتان في المقلاة (بلا فور)',fr:'Gratin à la poêle',e:'🍳',type:'light',time:20,diff:1,season:'all',modern:1,kids:1,region:'عصري',
+ req:[['potato'],['egg'],['cheese']],opt:['milk','onion','herbs','chicken'],
+ steps:['اقلي البطاطا شرائح رقاق مع البصل في شوية زبدة.','اخفقي البيض مع الحليب، الملح، الفلفل والفرماج.','صبّيه على البطاطا، غطّي المقلاة وخلّيه على نار هادئة حتى يجمد.'],
+ tip:'ما يحتاجش فور — 20 دقيقة وتتعشّاو.'},
+
+/* --- Modern tajines & stuffed --- */
+{id:'tajine_champignons',ar:'طاجين الدجاج بالشومبينيو',fr:'Tajine de poulet aux champignons',e:'🍄',type:'stew',time:60,diff:1,season:'all',modern:1,region:'عصري',
+ fact:'نسخة عصرية من طاجين الزيتون، ولّات منتشرة بزاف عند الطبّاخات الجزائريات في الأنترنت.',
+ req:[['chicken'],['mushroom'],['onion']],opt:['olives','garlic','carrot','chickpeas','lemon','cream','smen'],
+ steps:['قلّبي الدجاج مع البصل، الثوم، الزيت، السمن والتوابل (فلفل أكحل، كركم).','زيدي الماء وخلّيه يطيب 30 دقيقة.','قلّبي الشومبينيو في الزبدة وزيديه للمرق (والزيتون المغلي إذا تحبّي).','إذا تحبّيه كريمي، زيدي ملعقة كريمة فريش في الأخير.']},
+{id:'roules_tajine',ar:'طاجين رولي الدجاج المحشي',fr:'Tajine de roulés de poulet farcis',e:'🌀',type:'stew',time:75,diff:3,season:'all',modern:1,guests:1,ramadan:1,region:'عصري',
+ fact:'طبق «يشرّف» قدّام الضياف، تطيّب في حصص الطبخ تاع رمضان على التلفزيون.',
+ req:[['chicken'],['kefta'],['egg'],['mushroom','olives']],opt:['bread','herbs','garlic','onion'],
+ steps:['تبّلي الكفتة (صفار بيض، خبز مبلول، معدنوس، ثوم وكمون) وديري منها أصابع.','لفّي كل صبع في شريحة بلون دجاج مدقوقة.','حمّريهم شوية في الزيت.','طيّبيهم في مرق أبيض بالشومبينيو (ولا الزيتون)، وقطّعيهم مايلين وقت التقديم.']},
+{id:'roule_four',ar:'رولي الدجاج بالفرماج',fr:'Roulé de poulet farci au fromage',e:'🌀',type:'oven',time:75,diff:2,season:'all',modern:1,guests:1,kids:1,oven:1,region:'عصري',
+ req:[['chicken'],['cheese'],['onion','garlic']],opt:['kefta','mushroom','breadcrumbs','olives','cream'],
+ steps:['رحي بلون الدجاج مع البصل، الثوم والتوابل.','فرشيه على بلاستيك المطبخ، وحطّي الفرماج (والكفتة ولا الشومبينيو) في الوسط.','لفّيه مليح في البلاستيك ولا ورق الألومنيوم.','طيّبيه على البخار ولا في الفور، ومن بعد حمّريه في الزبدة وقطّعيه روندال.']},
+{id:'batata_kefta_four',ar:'طاجين البطاطا بالكفتة',fr:'Tajine batata bel kefta',e:'🥔',type:'oven',time:60,diff:1,season:'all',modern:1,oven:1,ramadan:1,region:'عصري',
+ req:[['kefta'],['potato'],['tomato','tpaste']],opt:['onion','pepper','cheese'],
+ steps:['ديري من الكفتة المتبّلة أقراص رقاق.','رتّبيهم بالتناوب مع شرائح البطاطا في صينية.','زيدي صلصة طماطم خفيفة وغطّيهم.','في الأخير حمّري الوجه في الفور (بالفرماج إذا تحبّي).']},
+{id:'kefta_choufleur',ar:'كفتة الشوفلور',fr:'Beignets de chou-fleur',e:'🥦',type:'light',time:40,diff:1,season:'winter',modern:1,region:'عصري',
+ req:[['cauliflower'],['egg'],['flour','breadcrumbs']],opt:['garlic','herbs','cheese','kefta'],
+ steps:['اسلقي الشوفلور ورحيه شوية.','زيدي البيض، الفرينة، الثوم، المعدنوس والتوابل.','ديري كويرات ولا أقراص واقليهم (ولا طيّبيهم في مرق أبيض كيما الطاجين).'],
+ tip:'طريقة ذكية باش تعوّضي اللحم وتوفّري.'},
+{id:'kromb_mehchi',ar:'كرومب محشي',fr:'Chou farci',e:'🥬',type:'stew',time:90,diff:2,season:'winter',modern:1,region:'عصري',
+ req:[['cabbage'],['kefta'],['rice'],['onion']],opt:['tomato','tpaste','chickpeas'],
+ steps:['سلقي أوراق الكرومب دقيقتين باش يرطبو.','خلطي الكفتة مع الروز، البصل والتوابل.','لفّي الحشوة في الأوراق.','طيّبيهم في مرق (أحمر ولا أبيض) حتى يرطبو.'],
+ tip:'كيما الدولمة، بصح بخضرة الشتاء.'},
+{id:'felfel_mehchi',ar:'فلفل محشي بالدجاج في الفور',fr:'Poivrons farcis au poulet',e:'🫑',type:'oven',time:60,diff:1,season:'summer',modern:1,oven:1,region:'عصري',
+ req:[['pepper'],['chicken','kefta'],['rice','bread']],opt:['cheese','mushroom','tomato','tpaste'],
+ steps:['فرّغي الفلفل.','خلطي الدجاج المرحي مع الروز (ولا الخبز)، التوابل والفرماج.','عمّري الفلفل ودخّليه للفور (ولا طيّبيه في المرق) 40 دقيقة.']},
+
+/* --- Pasta & rice --- */
+{id:'pates_creme',ar:'مقرونة بالدجاج والكريمة',fr:'Pâtes au poulet sauce blanche',e:'🍝',type:'pasta',time:30,diff:1,season:'all',modern:1,kids:1,region:'عصري',
+ req:[['pasta'],['chicken'],['cream','milk'],['garlic']],opt:['mushroom','cheese','herbs','pepper'],
+ steps:['اسلقي المقرونة.','قلّبي الدجاج مكعّبات مع الثوم والتوابل.','زيدي الشومبينيو، من بعد الكريمة والفرماج وخلّيهم يتخثّرو.','خلطي الصلصة مع المقرونة.'],
+ tip:'ما عندكش كريمة؟ حليب + فرماج بورسيون يديرو نفس الخدمة.'},
+{id:'riz_basmati',ar:'روز بالخضرة واللحم (طنجرة وحدة)',fr:'Riz aux légumes et viande',e:'🍚',type:'pasta',time:50,diff:1,season:'all',modern:1,region:'عصري',
+ req:[['rice'],['meat','chicken'],['carrot','zucchini'],['onion']],opt:['tomato','tpaste','peas'],
+ steps:['حمّري اللحم مع البصل، الثوم والتوابل.','زيدي الخضرة مكعّبات صغار والطماطم.','زيدي الروز المغسول والماء، غطّي وخلّيه على نار هادئة حتى يشرب.'],
+ tip:'غدا كامل في طنجرة وحدة، وقليل الماعون 😄'},
+{id:'vermicelle_vapeur',ar:'شعرية مفوّرة بالدجاج',fr:'Vermicelles au poulet à la vapeur',e:'🍜',type:'pasta',time:60,diff:2,season:'winter',guests:1,region:'كامل الجزائر',
+ req:[['vermicelli'],['chicken'],['onion']],opt:['chickpeas','egg','smen'],
+ steps:['طيّبي الدجاج في مرق أبيض بالقرفة والفلفل الأكحل.','فوّري الشعرية في الكسكاس، وبلّيها 2 ولا 3 مرات.','رشّيها بالمرق والسمن، وقدّميها بالدجاج (والبيض المسلوق).'],
+ tip:'أخف وأسرع من الكسكسي، ويشرّف.'},
+
+/* --- Fried & quick --- */
+{id:'cordon_bleu',ar:'كوردون بلو دار',fr:'Cordon bleu maison',e:'🧀',type:'fast',time:45,diff:2,season:'all',modern:1,kids:1,region:'عصري',
+ req:[['chicken'],['cheese'],['egg'],['breadcrumbs','flour']],opt:['cachir'],
+ steps:['دقّي بلون الدجاج (ولا رحيه وفرشيه).','حطّي الفرماج (وشريحة كاشير) وسكّريه.','دوّريه في الفرينة، البيض والشابلور، وخلّيه في الثلاجة 15 دقيقة.','اقليه ولا طيّبيه في الفور حتى يحمار.'],
+ tip:'حلال ومتاع الدار، وأرخص من المجمّد.'},
+{id:'escalope',ar:'إسكالوب بانيه',fr:'Escalope panée',e:'🍗',type:'fast',time:25,diff:1,season:'all',modern:1,kids:1,region:'عصري',
+ req:[['chicken'],['egg'],['breadcrumbs','flour']],opt:['garlic','cheese','lemon','potato'],
+ steps:['دقّي الإسكالوب وتبّليه بالثوم، الملح والفلفل.','دوّريه في الفرينة، البيض والشابلور.','اقليه 4–5 دقايق كل جهة، وقدّميه مع فريت ولا سلاطة.']},
+{id:'croque',ar:'كروك موسيو',fr:'Croque-monsieur',e:'🥪',type:'fast',time:20,diff:1,season:'all',modern:1,kids:1,oven:1,region:'عصري',
+ req:[['bread'],['cheese']],opt:['cachir','chicken','milk','egg'],
+ steps:['دهني خبز الميّ بالبشاميل (ولا الكريمة).','حطّي الكاشير ولا الدجاج والفرماج وسكّري.','بشاميل وفرماج من فوق، وفي الفور 10 دقايق.'],
+ tip:'عشا ولا قوتي في 20 دقيقة.'},
+{id:'kesra_mehchia',ar:'كسرة محشية',fr:'Kesra farcie',e:'🫓',type:'light',time:45,diff:1,season:'all',modern:1,region:'عصري',
+ req:[['flour'],['onion'],['tomato','pepper']],opt:['kefta','cheese','egg','tuna'],
+ steps:['حضّري عجينة الكسرة.','افردي جوج دوائر رقاق، وفرشي الحشوة (بصل، طماطم، فلفل — ولا كفتة) بيناتهم.','سكّري الجنابات وطيّبيها في الطاجين ولا المقلاة من الجهتين.'],
+ tip:'بنينة وخفيفة للعشا.'},
+
+/* --- Fast food at home --- */
+{id:'tacos',ar:'تاكوس دار',fr:'Tacos algérien maison',e:'🌯',type:'fast',time:45,diff:1,season:'all',modern:1,kids:1,region:'عصري',
+ fact:'التاكوس من أكثر الماكلة اللي يحبّوها الشباب في الجزائر — وفي الدار يجي أرخص وأنقى.',
+ req:[['tortilla'],['chicken','kefta'],['potato'],['cheese']],opt:['cream','mayo','mushroom','onion','cachir'],
+ steps:['اقلي البطاطا فريت.','قلّبي الدجاج ولا الكفتة مع الثوم والتوابل.','الصوص فروماجار: كريمة فريش + فرماج على النار. والصوص ألجيريان: مايونيز + هريسة.','عمّري التورتيا بالصوص، اللحم والفريت، طبّقيها مربّعة وحمّريها في المقلاة.']},
+{id:'chawarma',ar:'شاورما دار',fr:'Chawarma maison',e:'🥙',type:'fast',time:40,diff:2,season:'all',modern:1,kids:1,region:'عصري',
+ req:[['chicken'],['garlic'],['bread','tortilla'],['lemon','yogurt']],opt:['potato','mayo','yogurt','lemon'],
+ steps:['قطّعي الدجاج شرائح رقاق، وتبّليه بالثوم، القارص (ولا الياغورت) وتوابل الشاورما، وخلّيه ساعة.','طيّبيه على نار قوية.','سخّني الخبز.','لفّي الدجاج مع صوص الثوم، الفريت والسلاطة.']},
+{id:'pizza',ar:'بيتزا دار',fr:'Pizza maison',e:'🍕',type:'fast',time:90,diff:1,season:'all',modern:1,kids:1,ramadan:1,oven:1,region:'عصري',
+ fact:'وصفة بيتزا تاع ماما جزائرية على تيك توك جابت قريب 3 مليون مشاهدة في سمانة!',
+ req:[['flour'],['yeast'],['tomato','tpaste'],['cheese']],opt:['tuna','olives','pepper','mushroom','chicken','cachir','kefta'],
+ steps:['العجينة: فرينة، خميرة، ماء، زيت وملح. خلّيها تخمّر ساعة.','افرديها في صينية.','صلصة الطماطم، والحاجة اللي تحبّي (تون، زيتون، فلفل...) والفرماج.','في الفور 200° قريب 20–30 دقيقة.']},
+{id:'pizza_roulee',ar:'بيتزا رولي بالتون',fr:'Pizza roulée au thon',e:'🍥',type:'fast',time:90,diff:2,season:'all',modern:1,ramadan:1,guests:1,oven:1,region:'عصري',
+ req:[['flour'],['yeast'],['tuna'],['cheese']],opt:['tomato','tpaste','olives','egg','pepper'],
+ steps:['افردي عجينة البيتزا مستطيلة.','فرشي الصلصة، التون والفرماج.','لفّيها وقطّعيها روندال (ولا ديري بيتزا صغار).','في الفور حتى يحمارو.'],
+ tip:'ما تغيبش على صينية رمضان والعيد.'},
+{id:'quiche',ar:'كيش',fr:'Quiche',e:'🥧',type:'oven',time:60,diff:1,season:'all',modern:1,ramadan:1,oven:1,region:'عصري',
+ req:[['flour'],['smen'],['egg'],['cheese']],opt:['cream','milk','tuna','chicken','mushroom','zucchini','olives'],
+ steps:['عجينة: فرينة + زبدة + ملح وشوية ماء. فرشيها في قالب.','فرشي الحشوة (تون، دجاج، شومبينيو ولا خضرة).','اخفقي البيض مع الكريمة ولا الحليب والفرماج وصبّيه فوقها.','في الفور 180° قريب 35 دقيقة.']},
+{id:'coca',ar:'كوكا',fr:'Coca algérienne',e:'🥟',type:'oven',time:75,diff:2,season:'all',ramadan:1,oven:1,region:'الغرب (وهران)',
+ fact:'«البيتزا» التقليدية تاع الغرب الجزائري، رجعت للموضة.',
+ req:[['flour'],['onion'],['tomato'],['pepper']],opt:['tuna','olives'],
+ steps:['حضّري حشوة كيما الفريتة: بصل، طماطم وفلفل، وخلّيها تبرد.','حضّري عجينة (فرينة، زيت، ماء وملح).','عمّري أنصاف دوائر ولا طارطة رقيقة.','سكّريهم وفي الفور حتى يحمارو.']},
+{id:'burger',ar:'برغر دار',fr:'Burger maison',e:'🍔',type:'fast',time:60,diff:1,season:'all',modern:1,kids:1,region:'عصري',
+ req:[['kefta','chicken'],['bread'],['cheese']],opt:['tomato','onion','mayo','potato','egg'],
+ steps:['تبّلي الكفتة وديري منها أقراص.','طيّبيهم في مقلاة سخونة.','حطّي شريحة فرماج فوقهم باش تذوب.','عمّري الخبز بالصوص، الطماطم، البصل والسلاطة.'],
+ tip:'مع الفريت تاع الدار… الصغار يفرحو 😍'},
+
+/* --- Soup --- */
+{id:'veloute',ar:'فيلوتي الشومبينيو ولا الخضرة',fr:'Velouté de champignons / légumes',e:'🥣',type:'soup',time:35,diff:1,season:'winter',modern:1,region:'عصري',
+ req:[['mushroom','carrot','zucchini'],['onion'],['milk','cream'],['potato']],opt:['smen','cheese','herbs'],
+ steps:['قلّبي البصل والشومبينيو (ولا الخضرة) في الزبدة.','زيدي حبة بطاطا مكعّبات والماء، وخلّيه يطيب 20 دقيقة.','رحيه بالمكسور، وزيدي الحليب ولا الكريمة وصلّحي الملح.'],
+ tip:'شربة خفيفة للبرد، تتاكل بخبز الدار.'},
+
+/* --- Special occasion / weekend --- */
+{id:'poulet_farci',ar:'دجاج محشي في الفور',fr:'Poulet farci à l’algérienne',e:'🍗',type:'oven',time:105,diff:2,season:'all',guests:1,oven:1,region:'كامل الجزائر',
+ req:[['chicken'],['rice'],['kefta'],['egg']],opt:['onion','herbs','almonds','olives','smen'],
+ steps:['طيّبي الروز.','قلّبي البصل مع المعدنوس، الروز والكفتة، وزيدي البيض، القرفة واللوز.','عمّري الدجاجة، واللي يفضل ديري منو كويرات.','دهنيها بالزبدة وفي الفور 180° قريب ساعة، ورشّيها بالمرق تاعها.']},
+{id:'poulet_roti',ar:'دجاج في الفور بالبطاطا',fr:'Poulet rôti aux pommes de terre',e:'🍗',type:'oven',time:90,diff:1,season:'all',guests:1,kids:1,oven:1,region:'كامل الجزائر',
+ req:[['chicken'],['potato'],['garlic']],opt:['carrot','onion','lemon','olives'],
+ steps:['شرملي الدجاج بالثوم، الزيت، القارص، الفلفل الأحمر ورأس الحانوت.','حطّيه في صينية مع البطاطا والخضرة.','في الفور 200° قريب ساعة وربع، وقلّبيه مرة.'],
+ tip:'غدا الويكاند الكلاسيكي.'},
+{id:'gigot',ar:'فخذ العلوش في الفور',fr:'Gigot d’agneau au four',e:'🍖',type:'oven',time:240,diff:2,season:'winter',guests:1,oven:1,region:'كامل الجزائر',
+ fact:'كيما المشوي، بصح في فور الدار — يليق بزاف للحم العيد.',
+ req:[['meat'],['smen'],['garlic']],opt:['potato','onion'],
+ steps:['حكّي الفخذ بالسمن، الثوم، الكمون، الملح والفلفل.','لفّيه ولا غطّيه في صينية.','خلّيه في الفور على نار هادئة ساعات (حتى 6).','في الأخير نحّي الغطا باش يحمار.']},
+{id:'pastilla',ar:'باستيلا بالدجاج والشعرية',fr:'Pastilla au poulet et vermicelles',e:'🥮',type:'oven',time:90,diff:2,season:'all',guests:1,ramadan:1,oven:1,region:'تلمسان',
+ fact:'النسخة الجزائرية تاع الباستيلا معروفة بالشعرية.',
+ req:[['chicken'],['dyouls'],['vermicelli'],['egg']],opt:['onion','herbs','almonds','smen','olives','cheese'],
+ steps:['طيّبي الدجاج مع البصل، الثوم، المعدنوس والتوابل، ومن بعد فرفريه.','خلطيه مع الشعرية المطيّبة والبيض المخفوق في المرق.','فرشي الديول مدهونين بالزبدة في قالب، الحشوة في الوسط، وسكّري.','دهني الوجه بالصفار وفي الفور 20–30 دقيقة.']},
+{id:'malsouka',ar:'طاجين الملسوقة',fr:'Tajine malsouka',e:'🥧',type:'oven',time:60,diff:2,season:'all',ramadan:1,guests:1,oven:1,region:'أصلو تونسي',
+ fact:'أصلو تونسي، ويقدر يعوّض البوراك في رمضان.',
+ req:[['dyouls'],['chicken','tuna'],['egg'],['cheese']],opt:['herbs','olives','smen','onion'],
+ steps:['طيّبي الدجاج مكعّبات مع البصل والتوابل.','خلطيه مع البيض، الفرماج، المعدنوس والزيتون.','فرشي 5 ديول مدهونين بالزبدة، الحشوة، و5 ديول من فوق.','في الفور 180° قريب 30 دقيقة.']},
+{id:'tajine_djej_four',ar:'طاجين الدجاج بالبيض',fr:'Tajine algérois au poulet',e:'🥘',type:'oven',time:75,diff:2,season:'all',ramadan:1,guests:1,oven:1,region:'العاصمة',
+ fact:'زمان كانو يطيّبوه بلا فور (في الماء السخون)، واليوم في الفور.',
+ req:[['chicken'],['egg'],['potato']],opt:['olives','herbs','onion','cheese'],
+ steps:['طيّبي الدجاج في مرق أبيض ومن بعد فرفريه.','اقلي البطاطا مكعّبات.','خلطي الدجاج، البطاطا، شوية مرق، البيض المخفوق، المعدنوس والزيتون.','في الفور حتى يجمد، وقدّميه بالمرق اللي بقى.']},
+
+/* --- Salads (sides) --- */
+{id:'salade_tlitli',ar:'سلاطة التليتلي',fr:'Tlitli en salade',e:'🥗',type:'side',time:25,diff:1,season:'summer',modern:1,region:'عصري',
+ req:[['tlitli'],['tomato'],['pepper','onion']],opt:['tuna','olives','lemon','herbs'],
+ steps:['اسلقي التليتلي وبرّديه.','قطّعي الخضرة صغار.','خلطيهم مع زيت الزيتونة، القارص، الملح والمعدنوس.']},
+{id:'salade_decor',ar:'سلاطة مزوّقة للضياف',fr:'Salade composée décorée',e:'🥗',type:'side',time:40,diff:1,season:'all',modern:1,guests:1,region:'عصري',
+ req:[['egg'],['carrot'],['beetroot','peas'],['mayo']],opt:['tuna','olives','potato'],
+ steps:['تبّلي كل خضرة وحدها.','حطّي الماسيدوان في الوسط، والزرودية المرحية دايرة بيها.','زيدي طبقة بيتراف مرحي.','ديري شبكة ببياض البيض المرحي، وعمّري المربعات بالصفار.'],
+ tip:'تزيين على طريقة سميرة تي في — تشرّف الطابلة.'}
+];
+
+/* extra flags & aliases on traditional dishes */
+const GUEST_IDS=['rechta','couscous','chakhchoukha','tajine_zitoune','lham_lahlou','mtewem','tajine_jben','tajine_khoukh','sfiriya','dolma'];
+const OVEN_IDS=['karantika','tajine_hout','batata_koucha'];
+const KIDS_IDS=['macaroni','omelette_frites','maakouda','bourek','batata_koucha'];
+const ALIASES={lham_lahlou:'طاجين العين Tajine el aïn',batata_koucha:'بطاطا كباب Batata kbab'};
+
+/* ============ SWEETS & قهوة العصر ============ */
+const SWEETS=[
+/* --- Traditional --- */
+{id:'msemen',ar:'مسمن',fr:'Msemen',e:'🫓',type:'sweet',asr:1,time:60,diff:2,season:'all',region:'كامل الجزائر',
+ req:[['flour'],['smen']],opt:['honey'],
+ steps:['عجني السميد الرقيق مع الفرينة، الملح والماء حتى تولّي عجينة طرية، وخلّيها ترتاح.','قسمي كويرات، ودهنيهم بالزيت والسمن.','مدّي كل كويرة رقيقة بزاف، رشّي شوية سميد وطبّقيها مربّعة.','طيّبيها في الطاجين ولا المقلاة، وقدّميها بالعسل والسمن.'],
+ tip:'تتاكل حلوة بالعسل، ولا مالحة معمّرة بالبصل والطماطم.'},
+{id:'baghrir',ar:'بغرير',fr:'Baghrir',e:'🥞',type:'sweet',asr:1,time:60,diff:1,season:'all',region:'كامل الجزائر',
+ fact:'في ولايات الوسط يكاد يكون يومي، ويتاكل مع قهوة العشية ولا الحليب.',
+ req:[['flour'],['yeast']],opt:['bakingpowder','honey','smen','milk'],
+ steps:['اخلطي السميد الرقيق، شوية فرينة، الخميرة، خميرة الحلويات، الملح والماء السخون بالمكسور حتى يولّي سائل.','خلّيه يخمّر 30–45 دقيقة حتى يطلع فيه الحب.','صبّي مغرفة في مقلاة سخونة وطيّبيه من جهة وحدة حتى يتعمّر بالثقوب.','قدّميه بالعسل والسمن الذايب.']},
+{id:'sfenj',ar:'سفنج (خفاف)',fr:'Sfenj',e:'🍩',type:'sweet',asr:1,time:90,diff:2,season:'winter',region:'كامل الجزائر',
+ req:[['flour'],['yeast']],opt:['honey'],
+ steps:['ديري عجينة رطبة بزاف: فرينة، خميرة، ملح وماء سخون، وخلّيها تخمّر ساعة.','بلّي يدّيك، خوذي قطعة، اثقبيها بالصبع وطيّحيها في زيت سخون.','قلّبيها حتى تحمار، وقدّميها بالسكر ولا العسل.'],
+ tip:'مع قهوة سخونة في نهار برد… ما كاش كيفها.'},
+{id:'mbesses',ar:'مبسّس',fr:'Mbesses',e:'🟨',type:'sweet',asr:1,time:45,diff:1,season:'all',region:'الغرب والوسط',
+ req:[['flour'],['smen'],['egg']],opt:['bakingpowder','milk','orangeblossom'],
+ steps:['اخلطي السميد مع السكر، خميرة الحلويات والسمن الذايب، وفرّكيه مليح بيدّيك.','زيدي البيض والحليب حتى تولّي عجينة رطبة.','صبّيها في صينية مدهونة، وفي الفور 180° قريب 30 دقيقة.'],
+ tip:'ساهل وما يحتاجش ماكينة، بنين بزاف مع القهوة بالحليب.'},
+{id:'tamina',ar:'طمّينة',fr:'Tamina',e:'🍯',type:'sweet',asr:1,time:30,diff:1,season:'all',region:'العاصمة',
+ fact:'تتحضّر في الأفراح و«السبوع»، وتتاكل مع القهوة.',
+ req:[['flour'],['honey'],['smen']],opt:['almonds'],
+ steps:['حمّصي السميد الخشين في مقلاة على نار هادئة حتى يحمار شوية ويفوح.','ذوّبي الزبدة مع العسل.','خلطيهم وانتي سخونين، فرشيها في صحن وزيّنيها بالقرفة.']},
+{id:'rfiss',ar:'رفيس',fr:'Rfiss constantinois',e:'🌴',type:'sweet',asr:1,time:45,diff:2,season:'all',region:'قسنطينة',
+ req:[['flour'],['dates'],['smen']],opt:['honey'],
+ steps:['طيّبي كسرة رقيقة (سميد، ملح وماء) وفتّتيها وهي سخونة.','رحي التمر (الغرس) مع السمن.','فرّكي الكسرة مع الغرس والسمن حتى يتخلطو مليح.','شكّليها كويرات ولا قدّميها في صحن.']},
+{id:'makrout',ar:'مقروط',fr:'Makrout',e:'🔶',type:'sweet',asr:1,time:90,diff:3,season:'all',ramadan:1,guests:1,region:'كامل الجزائر',
+ fact:'من أحسن الحلويات في العالم حسب تصنيفات TasteAtlas 🏆',
+ req:[['flour'],['smen'],['dates']],opt:['honey','orangeblossom'],
+ steps:['اخلطي السميد الخشين مع السمن الذايب وخلّيه يرتاح، ومن بعد بلّيه بماء الزهر والماء حتى يتجمّع.','حضّري الغرس مع القرفة وماء الزهر وديري منو أصابع رقاق.','عمّري العجينة بالغرس، سكّري وقطّعي معيّنات.','اقليه ولا طيّبيه في الفور، وغطّسيه في العسل.']},
+{id:'ghribia',ar:'غريبية',fr:'Ghribia',e:'⚪',type:'sweet',asr:1,time:40,diff:1,season:'all',region:'كامل الجزائر',
+ req:[['flour'],['smen']],opt:['almonds'],
+ steps:['اخلطي الزبدة (ولا الزيت) مع السكر الناعم مليح.','زيدي الفرينة شوية بشوية حتى تولّي عجينة تتشدّ.','ديري كويرات واضغطي عليهم شوية، وفي الفور 160° حتى يتشقّقو شوية ويبقاو بيض.']},
+{id:'halwat_tabaa',ar:'حلوة الطابع',fr:'Halwat tabaa',e:'⭐',type:'sweet',asr:1,kids:1,time:45,diff:1,season:'all',region:'كامل الجزائر',
+ req:[['flour'],['egg'],['smen']],opt:['bakingpowder','jam'],
+ steps:['اخلطي البيض، السكر، الزيت ولا الزبدة، والفانيلا.','زيدي الفرينة وخميرة الحلويات حتى تولّي عجينة رطبة.','افرديها وقطّعيها بالطابع (أشكال).','دهنيها بالصفار وفي الفور حتى يحمارو.'],
+ tip:'الصغار يحبّو يعاونو في التقطيع بالطابع 😄'},
+{id:'sables',ar:'صابلي بالكونفيتور',fr:'Sablés à la confiture',e:'🍪',type:'sweet',asr:1,kids:1,time:50,diff:1,season:'all',region:'كامل الجزائر',
+ req:[['flour'],['smen'],['egg']],opt:['jam'],
+ steps:['اخلطي الزبدة مع السكر الناعم، وزيدي الصفار والفانيلا.','زيدي الفرينة حتى تولّي عجينة ناعمة.','افرديها وقطّعيها، ونص الحبات اثقبيها في الوسط.','في الفور حتى يصفارّو شوية، ولصقيهم بالكونفيتور.']},
+{id:'bradj',ar:'براج',fr:'Bradj',e:'🔷',type:'sweet',asr:1,time:60,diff:2,season:'all',region:'العاصمة والساحل',
+ req:[['flour'],['dates'],['smen']],opt:['honey'],
+ steps:['اخلطي السميد مع السمن وشوية ماء ملحي، وعجني خفيف.','الحشوة: غرس محلول مع القرفة.','فرشي طبقة عجينة، الغرس، وطبقة أخرى، وقطّعي معيّنات.','طيّبيهم في الطاجين من الجهتين، وغطّسيهم في العسل إذا تحبّي.']},
+{id:'griwech',ar:'قريوش',fr:'Griwech',e:'🥨',type:'sweet',asr:1,time:120,diff:3,season:'all',ramadan:1,region:'كامل الجزائر',
+ req:[['flour'],['egg'],['smen'],['honey']],opt:['orangeblossom'],
+ steps:['عجني الفرينة مع البيض، الزبدة الذايبة، شوية خل وماء الزهر.','افرديها رقيقة، قطّعيها بالرولو المسنّن وضفّريها.','اقليها حتى تحمار.','غطّسيها في العسل السخون وزيّنيها بالجلجلان.'],
+ tip:'ما تغيبش على طابلة رمضان مع الزلابية.'},
+{id:'kalb_louz',ar:'قلب اللوز',fr:'Kalb el louz',e:'💛',type:'sweet',asr:1,time:75,diff:2,season:'all',ramadan:1,guests:1,region:'العاصمة',
+ req:[['flour'],['almonds'],['honey']],opt:['orangeblossom','smen'],
+ steps:['اخلطي السميد الخشين مع الزبدة الذايبة والسكر، وبلّيه بماء الزهر.','فرشي نصو في صينية، الحشوة (لوز مرحي، سكر وقرفة) في الوسط، والنص الآخر فوقها.','اسقيه بالماء وخلّيه يرتاح ساعات، قطّعيه معيّنات وحطّي لوزة فوق كل وحدة.','في الفور حتى يحمار، وكي يخرج اسقيه بالشربات (عسل وماء الزهر).']},
+/* --- Modern --- */
+{id:'gateau_yaourt',ar:'كيك الياغورت',fr:'Gâteau au yaourt',e:'🍰',type:'sweet',asr:1,modern:1,kids:1,time:45,diff:1,season:'all',region:'عصري',
+ req:[['egg'],['yogurt'],['flour'],['bakingpowder']],opt:['chocolate','orangeblossom'],
+ steps:['اخفقي 3 بيضات مع السكر حتى يبياضّو.','زيدي الياغورت، وبنفس الكاس: كاس زيت، 3 كيسان فرينة وخميرة الحلويات.','صبّيه في قالب مدهون، وفي الفور 180° قريب 35 دقيقة.'],
+ tip:'كاس الياغورت هو المقياس — ساهل بزاف!'},
+{id:'cake_marbre',ar:'كيك مرمّر',fr:'Cake marbré',e:'🍫',type:'sweet',asr:1,modern:1,kids:1,time:55,diff:1,season:'all',region:'عصري',
+ req:[['egg'],['flour'],['milk'],['chocolate'],['bakingpowder']],opt:[],
+ steps:['حضّري عجينة كيك: بيض، سكر، زيت، حليب، فرينة وخميرة الحلويات.','قسميها على جوج، وفي نص زيدي الكاكاو ولا الشوكولا الذايبة.','صبّي بالتناوب في القالب ودوّري بعود باش يجي مرمّر.','في الفور 180° قريب 40 دقيقة.']},
+{id:'crepes',ar:'كريب',fr:'Crêpes',e:'🥞',type:'sweet',asr:1,modern:1,kids:1,time:30,diff:1,season:'all',region:'عصري',
+ req:[['flour'],['egg'],['milk']],opt:['chocolate','honey','jam'],
+ steps:['اخلطي الفرينة، البيض، الحليب، شوية سكر وزيت حتى تولّي سائلة بلا كعابر.','خلّيها ترتاح شوية.','صبّي شوية في مقلاة سخونة ودوّريها رقيقة، وقلّبيها.','عمّريها بالعسل، الشوكولا ولا الكونفيتور.']},
+{id:'pancakes',ar:'بان كيك',fr:'Pancakes',e:'🥞',type:'sweet',asr:1,modern:1,kids:1,time:25,diff:1,season:'all',region:'عصري',
+ req:[['flour'],['egg'],['milk'],['bakingpowder']],opt:['honey','chocolate','jam'],
+ steps:['اخلطي الفرينة، السكر وخميرة الحلويات.','زيدي البيض والحليب وشوية زيت، وخلطي بلا ما تبالغي.','صبّي دوائر صغار في مقلاة على نار هادئة، وقلّبيهم كي يطلع الحب.','قدّميهم بالعسل ولا الشوكولا.']},
+{id:'madeleines',ar:'مادلين',fr:'Madeleines',e:'🐚',type:'sweet',asr:1,modern:1,kids:1,time:30,diff:1,season:'all',region:'عصري',
+ req:[['egg'],['flour'],['smen'],['bakingpowder']],opt:['orangeblossom'],
+ steps:['اخفقي البيض مع السكر.','زيدي الزبدة الذايبة، الفرينة وخميرة الحلويات.','عمّري القوالب الصغار ثلاث أرباع.','في الفور 200° قريب 10 دقايق.']},
+{id:'brownies',ar:'براونيز',fr:'Brownies',e:'🟫',type:'sweet',asr:1,modern:1,kids:1,time:40,diff:1,season:'all',region:'عصري',
+ req:[['chocolate'],['egg'],['flour'],['smen']],opt:['almonds'],
+ steps:['ذوّبي الشوكولا مع الزبدة.','اخفقي البيض مع السكر وزيديهم.','زيدي الفرينة (واللوز إذا تحبّي).','في الفور 180° قريب 20–25 دقيقة — يبقى رطب في الوسط.']},
+{id:'brioche',ar:'بريوش الدار',fr:'Brioche maison',e:'🥐',type:'sweet',asr:1,modern:1,time:150,diff:2,season:'winter',region:'عصري',
+ req:[['flour'],['yeast'],['milk'],['egg'],['smen']],opt:['orangeblossom'],
+ steps:['اخلطي الفرينة، السكر، الخميرة، البيض والحليب السخون، وعجني مليح.','زيدي الزبدة شوية بشوية وعجني حتى تولّي العجينة ناعمة.','خلّيها تخمّر ساعة، شكّليها ضفيرة ولا كويرات وخلّيها تخمّر ثاني.','دهنيها بالصفار وفي الفور 180° قريب 25 دقيقة.']},
+{id:'flan',ar:'فلان كراميل',fr:'Flan caramel',e:'🍮',type:'sweet',dessert:1,modern:1,kids:1,time:60,diff:1,season:'all',region:'عصري',
+ req:[['milk'],['egg']],opt:[],
+ steps:['الكراميل: سكر على النار حتى يحمار، وصبّيه في القالب.','اخفقي البيض مع السكر، الحليب والفانيلا.','صبّيه فوق الكراميل، وطيّبيه في الفور في الماء (بان ماري) 45 دقيقة.','برّديه في الثلاجة وقلبيه في صحن.']},
+{id:'mousse_choco',ar:'موس الشوكولا',fr:'Mousse au chocolat',e:'🍫',type:'sweet',dessert:1,modern:1,kids:1,time:20,diff:1,season:'all',region:'عصري',
+ req:[['chocolate'],['egg']],opt:['cream'],
+ steps:['ذوّبي الشوكولا.','فرّقي البيض: الصفار مع الشوكولا، والبياض اخفقيه حتى يولّي ثلج.','خلطيهم بالشوية باش ما يطيحش.','خلّيها في الثلاجة 3 ساعات.']}
+];
+const ASR_IDS=['mhadjeb','kesra','kesra_mehchia','karantika'];
+const DRINKS={all:['☕ قهوة بالحليب','☕ قهوة كحلة','🍵 أتاي بالنعناع'],winter:['🥛 حليب سخون بالقرفة','☕ قهوة بالحليب','🍵 أتاي بالنعناع'],summer:['🍵 أتاي بالنعناع','🥛 لبن بارد','☕ قهوة كحلة']};
+
+const SITE_URL='';
+/* ============ SETUP ============ */
+const TYPES={soup:'شربة',stew:'طاجين ومرق',pasta:'عجائن وروز',couscous:'كسكسي',light:'خفيف وسريع',fish:'حوت',oven:'في الفور',fast:'فاست فود دار',side:'مع الطبق',sweet:'حلويات'};
+const DIFF=['','سهلة','متوسطة','تحب الصبر'];
+const DISHES=[...DISHES_OLD,...DISHES_NEW,...SWEETS];
+DISHES.forEach(d=>{
+  if(GUEST_IDS.includes(d.id)) d.guests=1;
+  if(OVEN_IDS.includes(d.id)) d.oven=1;
+  if(KIDS_IDS.includes(d.id)) d.kids=1;
+  if(ASR_IDS.includes(d.id)) d.asr=1;
+  if(ALIASES[d.id]) d.alias=ALIASES[d.id];
+  if(['mbesses','sables','halwat_tabaa','ghribia','kalb_louz','gateau_yaourt','cake_marbre','madeleines','brownies','brioche','flan'].includes(d.id)) d.oven=1;
+});
+const DMAP=Object.fromEntries(DISHES.map(d=>[d.id,d]));
+const MEALS=['lunch','asr','dinner'];
+
+/* ============ STORAGE ============ */
+const store={
+  get(k,def){try{const v=localStorage.getItem('wn_'+k);return v?JSON.parse(v):def}catch(e){return def}},
+  set(k,v){try{localStorage.setItem('wn_'+k,JSON.stringify(v))}catch(e){}}
+};
+let have=new Set(store.get('have',[]).filter(k=>ING[k]));
+let favs=new Set(store.get('favs',[]));
+let cookLog=store.get('cookLog',[]);           // [{id,date}]
+let todayState=store.get('today2',null);      // {date, style, lunch:[], asr:[], dinner:[]}
+let week=store.get('week2',null);             // {start, lunch:[], dinner:[], gen}
+let shop=store.get('shop',[]);                // [{id,k?,text?,done,from:[]}]
+let prefs=Object.assign({style:'all',noOven:false},store.get('prefs',{}));
+const saveShop=()=>store.set('shop',shop);
+const savePrefs=()=>store.set('prefs',prefs);
+
+/* ============ HELPERS ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dkey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const NOW=new Date();
+const TODAY=dkey(NOW);
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const daysBetween=(a,b)=>Math.round((new Date(b+'T12:00')-new Date(a+'T12:00'))/864e5);
+const fmt=(d,o)=>{try{return new Intl.DateTimeFormat('ar-DZ-u-nu-latn',o).format(d)}catch(e){return d.toDateString()}};
+const ingName=k=>ING[k]?ING[k].ar:k;
+const RAMADAN=isRamadan(NOW);
+function isRamadan(d){try{return parseInt(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{month:'numeric'}).format(d),10)===9}catch(e){return false}}
+function season(d){const m=d.getMonth()+1;return (m>=10||m<=3)?'winter':(m>=6&&m<=9)?'summer':'mid'}
+function seeded(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}
+  let a=h>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const pantryKnown=()=>have.size>0;
+const timeTxt=d=>d.time>=120?Math.round(d.time/60)+' ساعات':d.time+' دقيقة';
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2000)}
+const MEAL_LABEL=RAMADAN?{lunch:'🌅 الفطور',asr:'🍯 حلوة السهرة',dinner:'🌙 السحور'}:{lunch:'🌞 الغدا',asr:'☕ قهوة العصر',dinner:'🌙 العشا'};
+function currentMeal(){const h=NOW.getHours();if(RAMADAN)return h<20&&h>=4?'lunch':h<23&&h>=4?'asr':'dinner';return h<15?'lunch':h<18?'asr':'dinner'}
+
+function match(d){
+  const ovenMiss=prefs.noOven&&d.oven;
+  if(!pantryKnown()){
+    if(ovenMiss) return {can:false,ratio:.8,missing:[['__oven']],optHave:0,unknown:true};
+    return {can:true,ratio:1,missing:[],optHave:0,unknown:true};
+  }
+  const missing=d.req.filter(g=>!g.some(k=>have.has(k)));
+  if(ovenMiss) missing.push(['__oven']);
+  const total=d.req.length+(ovenMiss?1:0);
+  const optHave=(d.opt||[]).filter(k=>have.has(k)).length;
+  return {can:missing.length===0,ratio:(total-missing.length)/total,missing,optHave};
+}
+const missText=g=>g.map(ingName).join(' ولا ');
+const buyable=m=>m.missing.filter(g=>g[0]!=='__oven');
+function lastCookedDays(id,ref=TODAY){
+  let best=null;for(const h of cookLog){if(h.id!==id)continue;const n=daysBetween(h.date,ref);if(n>=0&&(best===null||n<best))best=n}return best;
+}
+function styleOk(d,style){
+  if(style==='trad') return !d.modern;
+  if(style==='modern') return !!d.modern;
+  if(style==='guests') return !!d.guests;
+  return true;
+}
+function baseWeight(d,ctx){
+  const m=match(d);
+  if(prefs.noOven&&d.oven) return 0;
+  let w=m.unknown?5:m.can?10:m.ratio>=.6?1.2:0.12;
+  w+=m.optHave*0.4;
+  const last=lastCookedDays(d.id);
+  if(last!==null&&last<8) w*=last<3?.03:.25;
+  if(favs.has(d.id)) w*=1.6;
+  if(ctx.ramadan&&d.ramadan) w*=3;
+  return w;
+}
+/* main meals (lunch / dinner) */
+function weight(d,ctx){
+  if(d.type==='side'||d.type==='sweet'||ctx.exclude.has(d.id)) return 0;
+  const style=ctx.style||'all';
+  if(!styleOk(d,style)) return 0;
+  let w=baseWeight(d,ctx);if(!w) return 0;
+  const s=season(ctx.date);
+  if(d.season===s) w*=1.8;
+  if(d.season==='winter'&&s==='summer') w*=.35;
+  if(d.season==='summer'&&s==='winter') w*=.45;
+  const day=ctx.date.getDay();const weekend=day===5||day===6;
+  const meal=ctx.meal||'lunch';
+  if(ctx.prevType&&d.type===ctx.prevType) w*=.45;
+  if(style==='all'&&d.modern) w*=.85;
+  if(meal==='lunch'){
+    if(day===5&&d.friday) w*=(match(d).can?30:5);
+    if(ctx.ramadan&&d.type==='soup') w*=2;
+    if(['light','fast'].includes(d.type)) w*=ctx.ramadan?.5:.35;
+    if(['stew','couscous','pasta'].includes(d.type)) w*=1.3;
+    if(d.time>100&&!weekend&&style!=='guests') w*=.25;
+  }else{ // dinner (or suhoor)
+    if(['light','fast','soup'].includes(d.type)) w*=2.5;
+    if(d.time<=45) w*=1.6;
+    if(d.time>90) w*=.12;
+    else if(d.time>60) w*=.4;
+    if(d.diff>=3) w*=.25;
+    if(d.type==='couscous') w*=.3;
+  }
+  return w;
+}
+/* قهوة العصر */
+function asrWeight(d,ctx){
+  if(!d.asr||ctx.exclude.has(d.id)) return 0;
+  const style=ctx.style||'all';
+  if(style==='trad'&&d.modern) return 0;
+  if(style==='modern'&&!d.modern) return 0;
+  let w=baseWeight(d,ctx);if(!w) return 0;
+  if(d.type==='sweet') w*=1.6;
+  if(style==='guests'&&(d.guests||d.diff>=2)) w*=3;
+  if(d.season===season(ctx.date)) w*=1.5;
+  if(d.time>100) w*=.4;
+  return w;
+}
+function dessertWeight(d,ctx){if(d.type!=='sweet'||!(d.dessert||d.guests)||ctx.exclude.has(d.id))return 0;return baseWeight(d,ctx)}
+function pickBy(fn,ctx,seed){
+  const r=seeded(seed);const items=DISHES.map(d=>[d,fn(d,ctx)]).filter(x=>x[1]>0);
+  const tot=items.reduce((a,x)=>a+x[1],0);if(!tot) return null;
+  let x=r()*tot;for(const [d,w] of items){x-=w;if(x<=0)return d}return items[items.length-1][0];
+}
+const pick=(ctx,seed)=>pickBy(ctx.meal==='asr'?asrWeight:weight,ctx,seed);
+function pickSide(main,seed,style){
+  const sides=DISHES.filter(d=>d.type==='side'&&match(d).can&&!(main.id==='mhadjeb'&&d.id==='kesra')&&(style==='guests'||!d.guests));
+  if(!sides.length) return null;
+  if(style==='guests'){const s=sides.find(x=>x.id==='salade_decor');if(s) return s}
+  if(main.type==='soup'){const b=sides.find(s=>s.id==='bourek');if(b) return b}
+  if(['stew','fish'].includes(main.type)){const k=sides.filter(s=>['kesra','slata','hmiss'].includes(s.id));if(k.length) return k[Math.floor(seeded(seed)()*k.length)]}
+  if(['fast','oven'].includes(main.type)){const k=sides.filter(s=>['slata','salade_tlitli','hmiss'].includes(s.id));if(k.length) return k[Math.floor(seeded(seed)()*k.length)]}
+  return sides[Math.floor(seeded(seed+'s')()*sides.length)];
+}
+function drinkFor(seed){const s=season(NOW);const list=DRINKS[s]||DRINKS.all;return list[Math.floor(seeded(seed)()*list.length)]}
+function reasonFor(d,date,style,meal){
+  const r=[];const m=match(d);const s=season(date);
+  if(meal==='asr'){
+    if(!RAMADAN) r.push('بعد صلاة العصر، قهوة وحاجة حلوة ☕');
+    if(d.kids) r.push('الصغار يحبّوها 😍');
+  }
+  if(meal==='lunch'&&date.getDay()===5&&d.friday) r.push('نهار الجمعة… والكسكسي تقليد ما يتبدّلش 🕌');
+  if(RAMADAN&&d.ramadan) r.push('رمضان كريم 🌙 من مائدة رمضان');
+  if(meal==='dinner'&&(d.time<=45||['light','soup'].includes(d.type))) r.push('عشا خفيف وما يدّيش وقت 🌙');
+  if(style==='guests') r.push('يشرّف قدّام الضياف 🎉');
+  if(s==='winter'&&d.season==='winter') r.push('الجو برد، حاجة سخونة تدفّي الدار 🔥');
+  if(s==='summer'&&d.season==='summer') r.push('يليق للصيف ☀️');
+  if(d.modern&&d.kids&&meal!=='asr') r.push('طبق عصري يفرّحو بيه الصغار 😍');
+  const last=lastCookedDays(d.id);
+  if(last!==null&&last>=14) r.push('عندك '+last+' يوم ما طيّبتيه 😋');
+  if(favs.has(d.id)) r.push('من المفضّلة ❤️');
+  if(!m.unknown&&m.can) r.push('وكلّ واش يلزم كاين ✅');
+  if(d.time<=35) r.push('سريع: '+d.time+' دقيقة برك ⏱');
+  return r.slice(0,2).join(' · ')||'من المطبخ الجزائري 🇩🇿';
+}
+
+/* ============ SHOPPING LIST ============ */
+let shopSeq=Date.now();
+function shopHasKey(k){return shop.some(s=>s.k===k&&!s.done)}
+function addShopKey(k,from){
+  const ex=shop.find(s=>s.k===k&&!s.done);
+  if(ex){if(from&&!ex.from.includes(from))ex.from.push(from);return false}
+  shop.push({id:'s'+(shopSeq++),k,done:false,from:from?[from]:[]});return true;
+}
+function addShopText(text){
+  text=text.trim();if(!text) return false;
+  const k=Object.keys(ING).find(key=>key!=='__oven'&&(ING[key].ar===text||ING[key].ar.split(' (')[0]===text));
+  if(k) return addShopKey(k,null);
+  if(shop.some(s=>!s.done&&s.text===text)) return false;
+  shop.push({id:'s'+(shopSeq++),text,done:false,from:[]});return true;
+}
+function addMissingOf(id){
+  const d=DMAP[id];const m=match(d);let n=0;
+  const groups=m.unknown?d.req:buyable(m);
+  for(const g of groups){if(g.some(k=>shopHasKey(k)))continue;if(addShopKey(g[0],id))n++}
+  saveShop();renderNavDot();
+  toast(n?'تزادو '+n+' حوايج للقائمة 🛒':'كلش راه في القائمة ✓');
+  if(currentView==='shop') renderShop();
+}
+function weekIds(){return week?[...week.lunch,...week.dinner].filter(id=>DMAP[id]):[]}
+function weekMissing(){
+  const out=new Map();
+  for(const id of weekIds()){const d=DMAP[id];
+    const m=match(d);const groups=m.unknown?d.req:buyable(m);
+    for(const g of groups){if(g.some(k=>shopHasKey(k)))continue;const k=g[0];
+      if(!out.has(k))out.set(k,[]);if(!out.get(k).includes(id))out.get(k).push(id)}}
+  return out;
+}
+function addWeekMissing(){
+  const wm=weekMissing();let n=0;
+  for(const [k,ids] of wm){for(const id of ids){if(addShopKey(k,id))n++}}
+  saveShop();renderNavDot();toast(n?'تزادو '+n+' حوايج للقائمة 🛒':'كلش راه في القائمة ✓');
+}
+function shopText(){
+  const todo=shop.filter(s=>!s.done);
+  return '🛒 قائمة المشتريات ('+todo.length+')\n'+todo.map(s=>'▫️ '+(s.k?ING[s.k].ar:s.text)).join('\n')+'\n\n— من تطبيق «واش نطيبو اليوم؟» 🇩🇿';
+}
+function copyText(text,boxSel){
+  const ok=()=>toast('تنسخ ✓ — الصقيه في الميساج');
+  const showBox=()=>{const b=$(boxSel||'#copy-box');if(!b)return;b.innerHTML='<div class="note" style="margin-top:10px">ما قدرتش ننسخ وحدي 🙏 اضغطي مطوّل على النص ← «نسخ»:</div><textarea class="copybox" readonly></textarea>';const ta=b.querySelector('textarea');ta.value=text;ta.focus();ta.select()};
+  const legacy=()=>{let done=false;try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;opacity:0';document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,text.length);done=document.execCommand('copy');document.body.removeChild(ta)}catch(e){}
+    done?ok():showBox()};
+  try{if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok,legacy)}else legacy()}catch(e){legacy()}
+}
+function renderNavDot(){
+  const n=shop.filter(s=>!s.done).length;const b=document.querySelector('nav button[data-go=shop]');
+  let dot=b.querySelector('.dot');if(!n){if(dot)dot.remove();return}
+  if(!dot){dot=document.createElement('span');dot.className='dot';b.appendChild(dot)}dot.textContent=n;
+}
+const QUICK=[['k','bread'],['k','milk'],['k','egg'],['k','onion'],['k','tomato'],['k','potato'],['t','سكر'],['t','قهوة'],['t','زيت'],['t','ملح'],['t','أتاي (شاي)'],['t','ماء']];
+function renderShop(){
+  const todo=shop.filter(s=>!s.done),done=shop.filter(s=>s.done);
+  const total=shop.length;const pct=total?Math.round(done.length/total*100):0;
+  const item=s=>{const name=s.k?ING[s.k].e+' '+ING[s.k].ar:'📝 '+esc(s.text);
+    const from=s.from.map(id=>DMAP[id]?DMAP[id].ar:'').filter(Boolean);
+    return `<li class="si ${s.done?'done':''}">
+      <button class="chk" data-shop-toggle="${s.id}"><span class="box">${s.done?'✓':''}</span><span style="min-width:0"><span class="nm">${name}</span>${from.length?`<span class="for">لـ: ${from.join('، ')}</span>`:''}</span></button>
+      <button class="del" data-shop-del="${s.id}" aria-label="نحّي">✕</button></li>`};
+  const wm=weekMissing();const sugg=[...wm.keys()].slice(0,16);
+  const text=shopText();
+  $('#v-shop').innerHTML=`
+    <div class="card">
+      <div class="title-row"><div class="t">🛒 قائمة المشتريات</div>${total?`<button class="linkbtn" id="shop-clear">مسح الكل</button>`:''}</div>
+      <div class="muted small">${todo.length?'باقي '+todo.length+' حوايج للشرا. اضغطي على الحاجة كي تشريها ✓':total?'شريتي كلش! 👏':'القائمة فارغة. زيدي حوايج من هنا، ولا من أي وصفة بالزر «🛒 زيدي الناقص».'}</div>
+      ${total?`<div class="progress"><i style="width:${pct}%"></i></div>`:''}
+      <form class="add-form" id="shop-form" autocomplete="off"><input id="shop-input" placeholder="✍️ زيدي حاجة... (مثلا: سكر)" maxlength="60"><button type="submit">زيدي</button></form>
+      <div class="quick">${QUICK.map(([t,v])=>`<button data-quick="${t}:${v}">${t==='k'?ING[v].e+' '+ING[v].ar:v}</button>`).join('')}</div>
+      ${todo.length?`<ul class="shoplist">${todo.map(item).join('')}</ul>`:''}
+      ${done.length?`<div class="sec-title" style="font-size:15px;margin:14px 2px 2px">✅ اللي شريتيهم (${done.length})</div><ul class="shoplist">${done.map(item).join('')}</ul>
+        <div class="actions"><button class="btn primary" id="shop-stock">🧺 حطّيهم في الكوزينة</button><button class="btn ghost" id="shop-clear-done">🗑 نحّيهم</button></div>`:''}
+    </div>
+    ${todo.length?`<div class="card">
+      <div class="title-row"><div class="t">📲 ابعثي القائمة</div></div>
+      <div class="muted small">للولد ولا للراجل اللي رايح للسوق 😄</div>
+      <div class="actions">
+        <a class="btn wa" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">💬 واتساب</a>
+        <button class="btn ghost" id="shop-copy">📋 نسخ</button>
+      </div><div id="copy-box"></div>
+    </div>`:''}
+    ${sugg.length?`<div class="card">
+      <div class="title-row"><div class="t">📅 ناقصين لبرنامج السمانة</div><button class="linkbtn" id="shop-addweek">زيدي كلش</button></div>
+      <div class="sugg">${sugg.map(k=>`<button data-quick="k:${k}" title="${wm.get(k).map(id=>DMAP[id].ar).join('، ')}">${ING[k].e} ${ING[k].ar}</button>`).join('')}</div>
+    </div>`:''}`;
+  $('#shop-form').onsubmit=e=>{e.preventDefault();const v=$('#shop-input').value;if(addShopText(v)){saveShop();renderShop();renderNavDot();$('#shop-input').focus()}else if(v.trim())toast('راهي في القائمة ✓')};
+  const c=$('#shop-copy');if(c)c.onclick=()=>copyText(shopText());
+  const s=$('#shop-stock');if(s)s.onclick=()=>{let n=0;shop.filter(x=>x.done&&x.k).forEach(x=>{have.add(x.k);n++});shop=shop.filter(x=>!x.done);saveShop();store.set('have',[...have]);resetToday();renderAll();toast(n?'تزادو '+n+' حوايج للكوزينة 🧺':'تنحّاو ✓')};
+  const cd=$('#shop-clear-done');if(cd)cd.onclick=()=>{shop=shop.filter(x=>!x.done);saveShop();renderShop();renderNavDot()};
+  const ca=$('#shop-clear');if(ca)ca.onclick=()=>{if(!ca.dataset.sure){ca.dataset.sure=1;ca.textContent='متأكدة؟ اضغطي ثاني';setTimeout(()=>{if(ca.isConnected){delete ca.dataset.sure;ca.textContent='مسح الكل'}},3000);return}shop=[];saveShop();renderShop();renderNavDot();toast('تمسحت القائمة')};
+  const aw=$('#shop-addweek');if(aw)aw.onclick=()=>{addWeekMissing();renderShop()};
+}
+
+/* ============ TODAY ============ */
+function resetToday(){todayState=null;store.set('today2',null)}
+const cur=meal=>{const l=todayState&&todayState[meal];return l&&l.length?DMAP[l[l.length-1]]:null};
+function ctxFor(meal,exclude){return {date:NOW,exclude:exclude||new Set(),ramadan:RAMADAN,style:prefs.style,meal}}
+function fillMeal(meal,extra=''){
+  const ex=new Set(todayState[meal]);
+  for(const m of MEALS) if(m!==meal&&cur(m)) ex.add(cur(m).id);
+  let d=pick(ctxFor(meal,ex),TODAY+':'+prefs.style+':'+meal+':'+todayState[meal].length+extra);
+  if(!d){todayState[meal]=[];d=pick(ctxFor(meal,new Set(MEALS.filter(m=>m!==meal&&cur(m)).map(m=>cur(m).id))),TODAY+meal+Date.now())}
+  if(d) todayState[meal].push(d.id);
+}
+function ensureToday(){
+  const style=prefs.style;
+  const valid=todayState&&todayState.date===TODAY&&todayState.style===style&&MEALS.every(m=>Array.isArray(todayState[m]));
+  if(!valid) todayState={date:TODAY,style,lunch:[],asr:[],dinner:[]};
+  let changed=!valid;
+  for(const m of MEALS){if(!cur(m)){todayState[m]=[];fillMeal(m);changed=true}}
+  if(changed) store.set('today2',todayState);
+}
+function reroll(meal){fillMeal(meal);store.set('today2',todayState);renderToday();renderWeek()}
+function cookedToday(id){
+  const already=cookLog.some(h=>h.id===id&&h.date===TODAY);
+  if(already){cookLog=cookLog.filter(h=>!(h.id===id&&h.date===TODAY));toast('تنحّى من السجل')}
+  else{cookLog.unshift({id,date:TODAY});cookLog=cookLog.slice(0,100);toast('صحّة! تسجّل ✓ 🍽️')}
+  store.set('cookLog',cookLog);renderToday();renderList();
+}
+const STYLES=[['all','🍽️','الكل'],['trad','🏺','تقليدي'],['modern','✨','عصري'],['guests','🎉','للضياف']];
+let focusMeal=currentMeal();
+function statusHTML(d){
+  const m=match(d);if(m.unknown&&!m.missing.length) return '';
+  if(m.can) return '<div class="status ok">✅ عندك كلّ واش يلزم</div>';
+  return '<div class="status miss">🛒 ناقصك: '+m.missing.map(missText).join('، ')+'</div>'+(buyable(m).length?`<button class="addmiss" data-addmiss="${d.id}">+ زيدي الناقص لقائمة المشتريات</button>`:'');
+}
+function heroCard(meal,d){
+  const style=prefs.style;const done=cookLog.some(h=>h.id===d.id&&h.date===TODAY);
+  let extra='';
+  if(meal==='asr') extra=`<div class="side">🫖 ومعاها: <b style="text-decoration:none">${drinkFor(TODAY+'drink')}</b></div>`;
+  else{
+    const side=pickSide(d,TODAY+d.id,style);
+    if(side) extra+=`<div class="side">🍽️ ومعاه: <b data-open="${side.id}">${side.e} ${side.ar}</b></div>`;
+    const day=NOW.getDay();
+    if(meal==='dinner'&&(style==='guests'||day===5||day===6)){const ds=pickBy(dessertWeight,ctxFor('dessert',new Set([cur('asr')&&cur('asr').id])),TODAY+'dessert');if(ds) extra+=`<div class="side" style="border-top:none;padding-top:0;margin-top:6px">🍮 تحلية: <b data-open="${ds.id}">${ds.e} ${ds.ar}</b></div>`}
+  }
+  return `<div class="card hero">
+      <span class="label">${MEAL_LABEL[meal]} · ⭐ دروك</span>
+      <div class="dish-emoji">${d.e}</div>
+      <h2>${d.ar}</h2>
+      <div class="fr">${d.fr}</div>
+      <div class="meta">
+        <span class="pill">⏱ ${timeTxt(d)}</span>
+        <span class="pill g">${DIFF[d.diff]}</span>
+        ${d.modern?'<span class="pill y">✨ عصري</span>':'<span class="pill t">📍 '+d.region+'</span>'}
+      </div>
+      <div class="reason">${reasonFor(d,NOW,style,meal)}</div>
+      ${statusHTML(d)}
+      <div class="actions">
+        <button class="btn primary full" data-open="${d.id}">📖 شوفي الوصفة</button>
+        <button class="btn ghost" data-reroll="${meal}">🔄 اقتراح آخر</button>
+        <button class="btn ${done?'done':'terra'}" data-cooked="${d.id}">${done?'✓ تسجّل':'✅ طيّبتو اليوم'}</button>
+      </div>
+      ${extra}
+    </div>`;
+}
+function miniCard(meal,d){
+  const m=match(d);
+  const st=m.unknown&&!m.missing.length?TYPES[d.type]+' · '+timeTxt(d):m.can?'✅ عندك كلش · '+timeTxt(d):'<span style="color:var(--terra-ink)">ناقصك '+m.missing.length+'</span> · '+timeTxt(d);
+  return `<div class="card mcard">
+    <div class="mhead"><button class="mlabel" data-focus="${meal}">${MEAL_LABEL[meal]} <span class="muted small">⌄</span></button><button class="mre" data-reroll="${meal}" aria-label="اقتراح آخر">🔄</button></div>
+    <button class="mrow" data-open="${d.id}"><span class="em">${d.e}</span><span class="body"><b>${d.ar}${d.modern?' <span class="badge">✨</span>':''}</b><small>${st}${meal==='asr'?' · '+drinkFor(TODAY+'drink'):''}</small></span><span class="chev">‹</span></button>
+  </div>`;
+}
+/* ---- family share ---- */
+function siteBase(){
+  try{if(window.top!==window.self) return SITE_URL||''}catch(e){return SITE_URL||''}
+  if(/^https?:$/.test(location.protocol)) return location.origin+location.pathname;
+  return SITE_URL||'';
+}
+function shareLink(){
+  const base=siteBase();if(!base) return '';
+  const p=new URLSearchParams({d:TODAY,l:cur('lunch').id,a:cur('asr').id,n:cur('dinner').id});
+  return base+'?'+p.toString();
+}
+function shareText(){
+  const L=cur('lunch'),A=cur('asr'),N=cur('dinner');const link=shareLink();
+  return `🍽️ برنامج اليوم في الدار — ${fmt(NOW,{weekday:'long',day:'numeric',month:'long'})}\n\n${MEAL_LABEL.lunch}: ${L.e} ${L.ar}\n${MEAL_LABEL.asr}: ${A.e} ${A.ar}\n${MEAL_LABEL.dinner}: ${N.e} ${N.ar}`+(link?`\n\n👉 الوصفات: ${link}`:'')+'\n\nبصحتكم ❤️';
+}
+function familyFromURL(){
+  try{const p=new URLSearchParams(location.search);const d=p.get('d');if(!d) return null;
+    const f={date:d,lunch:DMAP[p.get('l')],asr:DMAP[p.get('a')],dinner:DMAP[p.get('n')]};
+    return (f.lunch||f.asr||f.dinner)?f:null}catch(e){return null}
+}
+let FAMILY=familyFromURL();
+function familyCard(){
+  if(!FAMILY) return '';
+  const isToday=FAMILY.date===TODAY;
+  const dt=new Date(FAMILY.date+'T12:00');
+  const rows=MEALS.filter(m=>FAMILY[m]).map(m=>{const d=FAMILY[m];return `<button class="mrow" data-open="${d.id}"><span class="em">${d.e}</span><span class="body"><small>${MEAL_LABEL[m]}</small><b>${d.ar}</b></span><span class="chev">‹</span></button>`}).join('');
+  return `<div class="card family">
+    <div class="title-row"><div class="t">👨‍👩‍👧 ${isToday?'برنامج اليوم في الدار':'برنامج نهار '+fmt(dt,{weekday:'long',day:'numeric',month:'long'})}</div><button class="linkbtn" id="family-close" aria-label="سكّر">✕</button></div>
+    <div class="muted small">${isToday?'هذا واش راهي تطيّب يمّا اليوم 😋 اضغطوا باش تشوفو الوصفة.':'هذا برنامج قديم — شوفوا اقتراحات اليوم لتحت.'}</div>
+    <div class="fam-rows">${rows}</div>
+  </div>`;
+}
+function renderToday(){
+  ensureToday();
+  const style=prefs.style;
+  const v=$('#v-today');
+  const styleBar=`<div class="styles">${STYLES.map(([k,e,l])=>`<button class="${style===k?'on':''}" data-style="${k}"><span class="e">${e}</span>${l}</button>`).join('')}</div>`;
+  const cards=MEALS.map(m=>{const d=cur(m);if(!d) return `<div class="card empty">${MEAL_LABEL[m]}: ما لقيت حتى اقتراح 🤔</div>`;return m===focusMeal?heroCard(m,d):miniCard(m,d)}).join('');
+  const recent=cookLog.slice(0,8).map(h=>{const x=DMAP[h.id];if(!x)return'';const n=daysBetween(h.date,TODAY);
+    return `<button class="h" data-open="${x.id}"><div class="e">${x.e}</div><b>${x.ar}</b><div class="muted small">${n===0?'اليوم':n===1?'البارح':'قبل '+n+' أيام'}</div></button>`}).join('');
+  const ready=MEALS.every(m=>cur(m));
+  v.innerHTML=`
+    ${familyCard()}
+    ${!pantryKnown()&&!FAMILY?`<div class="hint"><span class="i">🧺</span><div>باش يكون الاقتراح على حساب واش كاين عندك، علّمي على الحوايج في <button data-go="have">واش عندي</button></div></div>`:''}
+    ${styleBar}
+    ${cards}
+    ${ready?`<div class="card share">
+      <div class="title-row"><div class="t">👨‍👩‍👧 ابعثي البرنامج للعائلة</div></div>
+      <div class="muted small">باش يعرفو واش راهو يستناهم اليوم 😋${siteBase()?' — يوصلهم رابط يفتحو بيه الوصفات.':''}</div>
+      <div class="actions">
+        <a class="btn wa" href="https://wa.me/?text=${encodeURIComponent(shareText())}" target="_blank" rel="noopener">💬 واتساب</a>
+        <button class="btn ghost" id="share-copy">📋 نسخ</button>
+      </div><div id="share-box"></div>
+    </div>`:''}
+    <div class="sec-title">💡 بدائل لـ ${MEAL_LABEL[focusMeal]}</div>
+    <div id="alts"></div>
+    ${recent?`<div class="sec-title">🗓️ آخر ما طيّبتي</div><div class="hist">${recent}</div>`:''}
+  `;
+  const sc=$('#share-copy');if(sc)sc.onclick=()=>copyText(shareText(),'#share-box');
+  const fc=$('#family-close');if(fc)fc.onclick=()=>{FAMILY=null;try{history.replaceState(null,'',location.pathname+location.hash)}catch(e){}renderToday()};
+  const ex=new Set(MEALS.map(m=>cur(m)&&cur(m).id).filter(Boolean));const alts=[];
+  for(let i=0;i<3;i++){const a=pick(ctxFor(focusMeal,ex),TODAY+style+focusMeal+'alt'+i);if(a){alts.push(a);ex.add(a.id)}}
+  $('#alts').innerHTML=alts.map(rowHTML).join('')||'<div class="empty small">ما كاين حتى اقتراح آخر.</div>';
+}
+
+/* ============ INGREDIENTS VIEW ============ */
+function renderHave(){
+  $('#have-count').textContent=have.size?'('+have.size+')':'';
+  $('#oven-row').innerHTML=`<span>🔥 عندي فور (كوشة)</span><span class="switch ${prefs.noOven?'':'on'}"></span>`;
+  $('#ing-groups').innerHTML=GROUPS.map(g=>`<div class="grp"><h3>${g.ar}</h3><div class="chips">${
+    Object.entries(ING).filter(([k,i])=>i.g===g.id).map(([k,i])=>`<button class="chip ${have.has(k)?'on':''}" data-ing="${k}"><span class="e">${i.e}</span>${i.ar}</button>`).join('')
+  }</div></div>`).join('');
+}
+function toggleIng(k){
+  have.has(k)?have.delete(k):have.add(k);store.set('have',[...have]);
+  resetToday();
+  renderHave();renderList();renderToday();renderWeek();
+}
+
+/* ============ LIST VIEW ============ */
+const FILTERS=[['all','الكل'],['can','✅ نقدر نطيّبو'],['sweet','🍰 حلويات'],['asr','☕ لقهوة العصر'],['trad','🏺 تقليدي'],['modern','✨ عصري'],['guests','🎉 للضياف'],['kids','😍 يحبّوه الصغار'],['soup','🍲 شربة'],['stew','🥘 طواجن'],['pasta','🍜 عجائن وكسكسي'],['oven','🧀 في الفور'],['fast','🍔 فاست فود دار'],['fish','🐟 حوت'],['quick','⏱ سريع'],['side','🥗 مع الطبق'],['fav','❤️ المفضّلة']];
+let curFilter='all';let q='';
+function rowHTML(d){
+  const m=match(d);const pct=Math.round(m.ratio*100);
+  return `<button class="row" data-open="${d.id}">
+    <div class="em">${d.e}</div>
+    <div class="body">
+      <div class="nm">${d.ar} ${d.modern?'<span class="badge">✨ عصري</span>':''}${d.guests?'<span class="badge g">🎉</span>':''}${favs.has(d.id)?'<span class="fav">❤️</span>':''}</div>
+      <div class="sub">${TYPES[d.type]} · ${timeTxt(d)} · ${d.region}</div>
+      ${m.unknown&&!m.missing.length?'':`<div class="bar"><i class="${m.can?'full':''}" style="width:${Math.max(pct,6)}%"></i></div>
+      ${m.can?'<div class="ok-line">✅ عندك كلش</div>':`<div class="miss-line">ناقصك: ${m.missing.map(missText).join('، ')}</div>`}`}
+    </div>
+  </button>`;
+}
+function renderList(){
+  $('#filters').innerHTML=FILTERS.map(([k,l])=>`<button class="f ${curFilter===k?'on':''}" data-f="${k}">${l}</button>`).join('');
+  let ds=DISHES.slice();const f=curFilter;const main=d=>d.type!=='side'&&d.type!=='sweet';
+  if(f==='can') ds=ds.filter(d=>match(d).can&&main(d));
+  else if(f==='pasta') ds=ds.filter(d=>d.type==='pasta'||d.type==='couscous');
+  else if(f==='quick') ds=ds.filter(d=>d.time<=40&&main(d));
+  else if(f==='fav') ds=ds.filter(d=>favs.has(d.id));
+  else if(f==='trad') ds=ds.filter(d=>!d.modern&&main(d));
+  else if(f==='modern') ds=ds.filter(d=>d.modern);
+  else if(f==='guests') ds=ds.filter(d=>d.guests);
+  else if(f==='kids') ds=ds.filter(d=>d.kids);
+  else if(f==='oven') ds=ds.filter(d=>d.oven&&main(d));
+  else if(f==='asr') ds=ds.filter(d=>d.asr);
+  else if(f!=='all') ds=ds.filter(d=>d.type===f);
+  else ds=ds.filter(main);
+  if(q){const s=q.toLowerCase();ds=DISHES.filter(d=>(d.ar+' '+d.fr+' '+d.region+' '+(d.alias||'')).toLowerCase().includes(s))}
+  ds.sort((a,b)=>{const ma=match(a),mb=match(b);return (mb.can-ma.can)||(mb.ratio-ma.ratio)||(mb.optHave-ma.optHave)});
+  $('#list-count').textContent=ds.length+(curFilter==='sweet'?' حلوة':' طبق');
+  $('#list').innerHTML=ds.length?ds.map(rowHTML).join(''):`<div class="empty">${f==='fav'?'ما زال ما اخترتيش أطباق مفضّلة ❤️':f==='can'?'ما كاين حتى طبق كامل بالحوايج اللي علّمتي عليهم. زيدي حوايج في «واش عندي» 🧺':'ما لقيت والو 🤔'}</div>`;
+}
+
+/* ============ WEEK VIEW ============ */
+const DAYN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+function genWeek(gen){
+  const lunch=[],dinner=[];const ex=new Set();let prevL=null,prevD=null;
+  for(let i=0;i<7;i++){
+    const date=addDays(NOW,i);const ram=isRamadan(date);
+    const l=pickBy(weight,{date,exclude:ex,ramadan:ram,prevType:prevL,style:'all',meal:'lunch'},'wl'+TODAY+':'+i+':'+gen);
+    if(l){ex.add(l.id);prevL=l.type}
+    const n=pickBy(weight,{date,exclude:ex,ramadan:ram,prevType:prevD,style:'all',meal:'dinner'},'wd'+TODAY+':'+i+':'+gen);
+    if(n){ex.add(n.id);prevD=n.type}
+    lunch.push(l?l.id:null);dinner.push(n?n.id:null);
+  }
+  week={start:TODAY,lunch,dinner,gen};store.set('week2',week);
+}
+function swapDay(i,meal){
+  const date=addDays(NOW,i);const ex=new Set(weekIds());const arr=week[meal];
+  const d=pickBy(weight,{date,exclude:ex,ramadan:isRamadan(date),prevType:i&&DMAP[arr[i-1]]?DMAP[arr[i-1]].type:null,style:'all',meal},'swap'+meal+i+':'+Date.now());
+  if(d){arr[i]=d.id;store.set('week2',week);if(i===0){todayState[meal].push(d.id);store.set('today2',todayState);renderToday()}renderWeek()}
+}
+function renderWeek(){
+  if(!week||week.start!==TODAY||!Array.isArray(week.lunch)||week.lunch.length<7||[...week.lunch,...week.dinner].some(id=>id&&!DMAP[id])) genWeek(0);
+  ensureToday();
+  for(const meal of ['lunch','dinner']){const t=cur(meal);if(t&&week[meal][0]!==t.id){const other=meal==='lunch'?'dinner':'lunch';
+    let j=week[meal].indexOf(t.id);if(j>0)week[meal][j]=week[meal][0];
+    j=week[other].indexOf(t.id);if(j>=0)week[other][j]=week[meal][0];
+    week[meal][0]=t.id;store.set('week2',week)}}
+  const wm=weekMissing();
+  const line=(i,meal)=>{const d=DMAP[week[meal][i]];if(!d)return '';const m=match(d);
+    return `<div class="meal-line"><span class="ml">${meal==='lunch'?'🌞':'🌙'}</span>
+      <button class="dish" data-open="${d.id}"><span class="e">${d.e}</span><span style="min-width:0"><b style="display:block">${d.ar}${d.modern?' <span class="badge">✨</span>':''}</b><span class="small" style="color:${!m.can&&!(m.unknown&&!m.missing.length)?'var(--terra-ink)':'var(--muted)'}">${m.unknown&&!m.missing.length?TYPES[d.type]+' · '+d.time+' د':m.can?'✅ عندك كلش':'ناقصك '+m.missing.length}</span></span></button>
+      <button class="swap" data-swap="${i}" data-meal="${meal}" aria-label="بدّل">🔄</button></div>`};
+  $('#v-week').innerHTML=`
+    <div class="card">
+      <div class="title-row"><div class="t">📅 برنامج السمانة</div><button class="linkbtn" id="regen">🔄 برنامج جديد</button></div>
+      <div class="muted small">🌞 ${RAMADAN?'فطور':'غدا'} و🌙 ${RAMADAN?'سحور':'عشا'} لكل نهار، بلا ما يتعاود حتى طبق، والجمعة كسكسي إن شاء الله.</div>
+      ${week.lunch.map((_,i)=>{const date=addDays(NOW,i);
+        return `<div class="day ${date.getDay()===5?'fri':''}">
+          <div class="dn"><b>${i===0?'اليوم':i===1?'غدوة':DAYN[date.getDay()]}</b><small>${fmt(date,{day:'numeric',month:'short'})}</small></div>
+          <div class="meals">${line(i,'lunch')}${line(i,'dinner')}</div>
+        </div>`}).join('')}
+    </div>
+    <div class="card">
+      <div class="title-row"><div class="t">🛒 الناقص للسمانة</div></div>
+      ${wm.size?`<div class="muted small">${wm.size} حوايج ناقصين باش تطيّبي البرنامج كامل${pantryKnown()?'':' (علّمي على واش عندك في «واش عندي» باش تخرج غير الحوايج الناقصة)'}.</div>
+        <button class="btn primary wide" style="margin-top:12px" id="week-to-shop">🛒 زيديهم لقائمة المشتريات</button>`
+      :'<div class="status ok" style="margin-top:6px">✅ كلش كاين ولا راه في القائمة!</div>'}
+    </div>`;
+  $('#regen').onclick=()=>{genWeek((week.gen||0)+1);renderWeek();toast('برنامج جديد ✨')};
+  const b=$('#week-to-shop');if(b)b.onclick=()=>{addWeekMissing();go('shop')};
+}
+
+/* ============ SHEETS ============ */
+function openSheet(html){$('#sheet').innerHTML='<div class="grab"></div><button class="close" id="close" aria-label="سكّر">✕</button>'+html;$('#overlay').classList.add('on');$('#sheet').scrollTop=0;$('#close').onclick=closeSheet}
+function closeSheet(){$('#overlay').classList.remove('on')}
+function openRecipe(id){
+  const d=DMAP[id];if(!d)return;const m=match(d);const last=lastCookedDays(d.id);
+  const reqItems=d.req.map(g=>{const ok=m.unknown?null:g.some(k=>have.has(k));const inShop=g.some(k=>shopHasKey(k));
+    return `<li><span class="st ${ok===null?'o':ok?'y':'n'}">${ok===null?'•':ok?'✓':'✗'}</span>${ING[g[0]].e} ${missText(g)}${!ok&&inShop?'<span class="tag">🛒 في القائمة</span>':''}</li>`}).join('');
+  const optItems=(d.opt||[]).map(k=>{const ok=have.has(k);return `<li><span class="st ${ok?'y':'o'}">${ok?'✓':'+'}</span>${ING[k].e} ${ING[k].ar}<span class="tag">اختياري</span></li>`}).join('');
+  const done=cookLog.some(h=>h.id===d.id&&h.date===TODAY);
+  const bm=m.unknown?d.req:buyable(m);
+  openSheet(`
+    <div class="head">
+      <div class="dish-emoji" style="width:90px;height:90px;font-size:48px;margin-top:0">${d.e}</div>
+      <h2 style="font-family:'Reem Kufi',serif;font-size:28px;line-height:1.3">${d.ar}</h2>
+      <div class="fr">${d.fr}${d.alias?' · '+d.alias:''}</div>
+      <div class="meta">
+        <span class="pill">⏱ ${timeTxt(d)}</span><span class="pill g">${DIFF[d.diff]}</span>
+        <span class="pill">${TYPES[d.type]}</span>${d.modern?'<span class="pill y">✨ عصري</span>':'<span class="pill t">📍 '+d.region+'</span>'}
+        ${d.guests?'<span class="pill y">🎉 للضياف</span>':''}${d.asr?'<span class="pill">☕ للقهوة</span>':''}${d.oven?'<span class="pill">🔥 فور</span>':''}
+      </div>
+      ${last!==null?`<div class="muted small">آخر مرة طيّبتيه: ${last===0?'اليوم':last===1?'البارح':'قبل '+last+' أيام'}</div>`:''}
+    </div>
+    ${d.fact?`<div class="fact">💡 <span>${d.fact}</span></div>`:''}
+    ${m.missing.some(g=>g[0]==='__oven')?'<div class="fact">🔥 <span>هذا يحتاج فور. (بدّلي الإعداد في «واش عندي»)</span></div>':''}
+    <h4>🧺 المقادير</h4>
+    <div class="card" style="padding:6px 14px"><ul class="ilist">${reqItems}${optItems}</ul></div>
+    <div class="muted small">+ الملح، الزيت، السكر والتوابل</div>
+    ${bm.length&&(!m.can||m.unknown)?`<button class="btn ghost wide" style="margin-top:10px" data-addmiss="${d.id}">🛒 ${m.unknown?'زيدي المقادير لقائمة المشتريات':'زيدي الناقص لقائمة المشتريات ('+bm.length+')'}</button>`:''}
+    <h4>👩‍🍳 الطريقة</h4>
+    <ol class="steps">${d.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+    ${d.tip?`<div class="tip">💚 ${d.tip}</div>`:''}
+    <div class="actions" style="margin-top:18px">
+      <button class="btn ghost" data-fav="${d.id}">${favs.has(d.id)?'💔 نحّيه من المفضّلة':'❤️ مفضّل'}</button>
+      <button class="btn ${done?'done':'terra'}" data-cooked="${d.id}">${done?'✓ تسجّل اليوم':'✅ طيّبتو اليوم'}</button>
+    </div>`);
+}
+let deferredInstall=null;
+function openInstall(){
+  openSheet(`
+    <div class="head"><div class="dish-emoji" style="width:84px;height:84px;font-size:44px;margin-top:0">📲</div>
+    <h2 style="font-family:'Reem Kufi',serif;font-size:26px">نحطّو التطبيق في التيليفون</h2>
+    <div class="muted small">أندرويد · Chrome</div></div>
+    ${deferredInstall?'<button class="btn primary wide" id="do-install" style="margin-top:14px">📲 ثبّتي التطبيق دروك</button>':''}
+    <h4>خطوة بخطوة</h4>
+    <div class="card"><ol class="install-steps">
+      <li>افتحي الرابط تاع التطبيق في <b>Chrome</b>.</li>
+      <li>اضغطي على <span class="kbd">⋮</span> (الثلاث نقاط) لفوق.</li>
+      <li>اختاري <b>«تثبيت التطبيق»</b> ولا <b>«إضافة إلى الشاشة الرئيسية»</b>.</li>
+      <li>اضغطي <b>تثبيت</b> / <b>إضافة</b>.</li>
+      <li>تولّي عندك أيقونة 🍲 في الشاشة كيما أي تطبيق 🎉</li>
+    </ol></div>
+    <div class="tip">💚 الحوايج اللي تعلّمي عليها والقائمة يتحفظو في هذا التيليفون، وحتى بلا أنترنت يخدم.</div>`);
+  const b=$('#do-install');if(b)b.onclick=async()=>{try{deferredInstall.prompt();await deferredInstall.userChoice}catch(e){}deferredInstall=null;closeSheet()};
+}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;const b=$('#install-btn');if(b)b.textContent='📲 ثبّتي التطبيق في التيليفون'});
+
+/* ============ THEME ============ */
+function currentTheme(){return document.documentElement.dataset.theme==='dark'?'dark':'light'}
+function applyTheme(t){
+  document.documentElement.dataset.theme=t;
+  const m=document.querySelector('meta[name=theme-color]');if(m)m.content=t==='dark'?'#123628':'#1E6B4F';
+  const b=$('#theme-btn');if(b){b.textContent=t==='dark'?'☀️':'🌙';b.setAttribute('aria-label',t==='dark'?'الوضع النهاري':'الوضع الليلي')}
+}
+function toggleTheme(){const t=currentTheme()==='dark'?'light':'dark';applyTheme(t);store.set('theme',t);toast(t==='dark'?'🌙 الوضع الليلي':'☀️ الوضع النهاري')}
+
+/* ============ NAV & EVENTS ============ */
+let currentView='today';
+const VIEWS=['today','have','list','week','shop'];
+function go(view){
+  currentView=view;
+  if(view==='shop') renderShop();
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+view));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===view));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(location.hash!=='#'+view){try{history.replaceState(null,'',location.pathname+location.search+'#'+view)}catch(e){try{location.hash=view}catch(_){}}}
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-go],[data-ing],[data-open],[data-cooked],[data-fav],[data-f],[data-swap],[data-style],[data-addmiss],[data-shop-toggle],[data-shop-del],[data-quick],[data-reroll],[data-focus]');
+  if(!t){if(e.target.id==='overlay')closeSheet();return}
+  const ds=t.dataset;
+  if(ds.go){closeSheet();go(ds.go)}
+  else if(ds.ing) toggleIng(ds.ing);
+  else if(ds.open) openRecipe(ds.open);
+  else if(ds.cooked){cookedToday(ds.cooked);if($('#overlay').classList.contains('on'))openRecipe(ds.cooked)}
+  else if(ds.fav){const id=ds.fav;favs.has(id)?favs.delete(id):favs.add(id);store.set('favs',[...favs]);toast(favs.has(id)?'تزاد للمفضّلة ❤️':'تنحّى');openRecipe(id);renderList();renderToday()}
+  else if(ds.f){curFilter=ds.f;renderList()}
+  else if(ds.swap!==undefined) swapDay(+ds.swap,ds.meal||'lunch');
+  else if(ds.style){prefs.style=ds.style;savePrefs();renderToday()}
+  else if(ds.reroll) reroll(ds.reroll);
+  else if(ds.focus){focusMeal=ds.focus;renderToday()}
+  else if(ds.addmiss){addMissingOf(ds.addmiss);if($('#overlay').classList.contains('on'))openRecipe(ds.addmiss);renderToday()}
+  else if(ds.shopToggle){const s=shop.find(x=>x.id===ds.shopToggle);if(s){s.done=!s.done;saveShop();renderShop();renderNavDot()}}
+  else if(ds.shopDel){shop=shop.filter(x=>x.id!==ds.shopDel);saveShop();renderShop();renderNavDot()}
+  else if(ds.quick){const [ty,v]=ds.quick.split(/:(.*)/s);const added=ty==='k'?addShopKey(v,null):addShopText(v);saveShop();renderShop();renderNavDot();toast(added?'تزادت ✓':'راهي في القائمة ✓')}
+});
+$('#clear-have').onclick=()=>{have.clear();store.set('have',[]);resetToday();renderAll();toast('تمسح كلش')};
+$('#oven-row').onclick=()=>{prefs.noOven=!prefs.noOven;savePrefs();resetToday();renderAll();toast(prefs.noOven?'ما نقترحوش حوايج الفور':'حوايج الفور رجعت 🔥')};
+$('#search').addEventListener('input',e=>{q=e.target.value.trim();renderList()});
+$('#theme-btn').onclick=toggleTheme;
+$('#install-btn').onclick=openInstall;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(VIEWS.includes(h)&&h!==currentView)go(h)});
+
+function renderHeader(){
+  const h=NOW.getHours();
+  $('#greet').textContent=FAMILY?'مرحبا بالعائلة 👋':(h<12?'صباح الخير يا يمّا ☀️':h<18?'مساء الخير يا يمّا 🌤️':'مساء النور يا يمّا 🌙');
+  $('#today-date').textContent=fmt(NOW,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const b=[];
+  if(RAMADAN) b.push('🌙 رمضان كريم');
+  if(NOW.getDay()===5) b.push('🕌 جمعة مباركة');
+  const s=season(NOW); b.push(s==='winter'?'❄️ أطباق الشتاء':s==='summer'?'☀️ أطباق الصيف':'🌸 أطباق الموسم');
+  $('#banner').innerHTML=b.map(x=>`<span class="banner">${x}</span> `).join('');
+  $('#dish-total').textContent=DISHES.filter(d=>d.type!=='side'&&d.type!=='sweet').length+' طبق و'+DISHES.filter(d=>d.type==='sweet').length+' حلوة';
+}
+function renderAll(){renderHeader();renderHave();renderList();renderToday();renderWeek();renderNavDot();if(currentView==='shop')renderShop()}
+applyTheme(currentTheme());
+renderAll();
+{const h=location.hash.slice(1);if(VIEWS.includes(h)&&h!=='today')go(h)}
+
+/* offline support when hosted (GitHub Pages) */
+try{if('serviceWorker' in navigator&&location.protocol==='https:'&&window.top===window.self){navigator.serviceWorker.register('sw.js').catch(()=>{})}}catch(e){}
+
+</script>
+</body>
+</html>
